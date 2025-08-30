@@ -140,18 +140,31 @@ const BORDER = "#D1D5DB";
 const MUTED = "#F9FAFB";
 
 const styles = StyleSheet.create({
-  container: { flex: 1, padding: 16, paddingTop: 32, backgroundColor: "#FFFFFF" },
+  container: { 
+    flex: 1, 
+    padding: 16, 
+    paddingTop: 32, 
+    backgroundColor: "#FFFFFF",
+    maxWidth: 600,
+    alignSelf: "center",
+    width: "100%",
+  },
   title: { fontSize: 20, fontWeight: "700", marginBottom: 8, color: BRAND },
   jobText: { fontSize: 16, marginBottom: 16, color: "#6B7280" },
 
   proCard: {
     alignItems: "center",
-    padding: 16,
+    padding: 20,
     borderWidth: 1,
     borderColor: BORDER,
-    borderRadius: 12,
+    borderRadius: 16,
     backgroundColor: "#fff",
-    marginBottom: 16,
+    marginBottom: 24,
+    shadowColor: "#000",
+    shadowOffset: { width: 0, height: 2 },
+    shadowOpacity: 0.1,
+    shadowRadius: 8,
+    elevation: 3,
   },
   avatarWrap: {
     width: 84,
@@ -179,7 +192,10 @@ const styles = StyleSheet.create({
   sep: { color: "#9CA3AF", marginHorizontal: 2 },
   row: { flexDirection: "row", alignItems: "center" },
 
-  ratingSection: { marginTop: 8 },
+  ratingSection: { 
+    marginTop: 16,
+    paddingHorizontal: 8,
+  },
   ratingTitle: { fontSize: 18, fontWeight: "600", marginBottom: 16, textAlign: "center", color: BRAND },
   starsContainer: { flexDirection: "row", justifyContent: "center", alignItems: "center", paddingVertical: 20 },
   starButton: { padding: 8, marginHorizontal: 2 },
@@ -201,7 +217,15 @@ const styles = StyleSheet.create({
   button: { marginTop: 12, backgroundColor: BRAND, padding: 12, borderRadius: 10, alignItems: "center" },
   buttonText: { color: "#fff", fontWeight: "600", fontSize: 16 },
 
-  thankYouSection: { alignItems: "center", marginTop: 24, padding: 20, backgroundColor: "#F0FDF4", borderRadius: 12 },
+  thankYouSection: { 
+    alignItems: "center", 
+    marginTop: 24, 
+    padding: 24, 
+    backgroundColor: "#F0FDF4", 
+    borderRadius: 16,
+    borderWidth: 1,
+    borderColor: "#D1FAE5",
+  },
   thankYouText: { fontSize: 18, fontWeight: "600", color: "#16A34A", marginBottom: 8 },
   finalRating: { fontSize: 16, color: BRAND, fontWeight: "600", marginBottom: 4 },
   finalComment: { fontSize: 14, color: "#6B7280", fontStyle: "italic", textAlign: "center", marginTop: 8 },
