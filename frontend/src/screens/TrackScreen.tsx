@@ -71,7 +71,20 @@ export default function TrackScreen() {
   const { jobId, location, details, provider } = route.params ?? {};
 
   // ETA + status (mock progression)
-  const [eta, setEta] = React.useState(provider?.eta || 10);
+  const [eta, setEta] = React.useState(() => {
+    if (provider?.eta) {
+      // Convert ETA string to minutes for display
+      const etaString = provider.eta;
+      if (etaString.includes('minutes')) {
+        return Math.min(parseInt(etaString.split(' ')[0]) || 10, 20);
+      } else if (etaString.includes('hour')) {
+        return Math.min(parseInt(etaString.split(' ')[0]) * 60 || 60, 20);
+      } else if (etaString.includes('hours')) {
+        return Math.min(parseInt(etaString.split(' ')[0]) * 60 || 60, 20);
+      }
+    }
+    return 10; // Default fallback
+  });
   const [status, setStatus] = React.useState<Status>("enroute");
   
   // Location tracking
@@ -174,7 +187,7 @@ export default function TrackScreen() {
   // Process provider data from backend API
   const pro = provider ? processProviderData(provider) : {
     name: "Van Songyot",
-    trade: "Locksmith",
+    trade: "Cleaner",
     rating: 4.9,
     jobs: 124,
     distanceKm: 2.1,
