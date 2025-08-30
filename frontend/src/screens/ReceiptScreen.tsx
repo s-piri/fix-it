@@ -8,6 +8,11 @@ type Pro = {
   rating: number;
   jobs: number;
   photo: any; // ImageSourcePropType
+  // API provider fields
+  provider_name?: string;
+  provider_id?: number;
+  eta?: number;
+  profile_picture?: string;
 };
 
 export default function ReceiptScreen() {
@@ -18,17 +23,22 @@ export default function ReceiptScreen() {
   const [rating, setRating] = React.useState(0);
   const [comment, setComment] = React.useState("");
 
-  // Fallback mock pro if none passed in
-  const proInfo: Pro =
-    pro ?? {
-      name: "John Doe",
-      trade: "Locksmith",
-      rating: 4.9,
-      jobs: 124,
-      photo: { uri: "https://i.pravatar.cc/160?u=alex.tan.locksmith" },
-      // or use a local asset:
-      // photo: require("../../assets/pros/alex.png")
-    };
+  // Process provider data from API or use fallback
+  const proInfo: Pro = pro ? {
+    name: pro.name || pro.provider_name || "Professional",
+    trade: pro.trade || "Service Provider",
+    rating: pro.rating || 4.5,
+    jobs: pro.jobs || 100,
+    photo: pro.photo || pro.profile_picture || require("../../assets/pros/driver1.jpg"),
+    provider_id: pro.provider_id,
+    eta: pro.eta,
+  } : {
+    name: "John Doe",
+    trade: "Locksmith",
+    rating: 4.9,
+    jobs: 124,
+    photo: require("../../assets/pros/driver1.jpg"),
+  };
 
   const handleSubmitRating = () => {
     console.log("Rating submitted:", { rating, comment, jobId, pro: proInfo });

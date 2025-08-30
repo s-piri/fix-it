@@ -81,7 +81,10 @@ export default function TrackScreen() {
     if (eta === 3) setStatus("onsite");
     if (eta === 0) {
       setStatus("completed");
-      nav.navigate("Receipt", { jobId });
+      nav.navigate("Receipt", { 
+        jobId, 
+        pro: pro // Pass the actual provider data from API
+      });
     }
   }, [eta, nav, jobId]);
 
