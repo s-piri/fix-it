@@ -1,4 +1,4 @@
-# Fix-it
+# FIXR
 
 > On-demand home service platform fast, reliable, verified. Solve urgent household problems instantly while providing steady, fairly paid work for independent professionals.
 
