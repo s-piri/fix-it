@@ -198,6 +198,8 @@ export default function HomeScreen() {
 
               const selectedService = SERVICES.find(s => s.id === selected);
               nav.navigate("Finding", {
+                jobId: `JOB_${Date.now()}`, // Generate unique job ID
+                jobType: selectedService?.name.toLowerCase(), // Convert to lowercase for backend
                 location,
                 details,
                 service: selectedService?.name, // e.g., "Plumber"
