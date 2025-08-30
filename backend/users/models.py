@@ -4,18 +4,6 @@ from django.db.models.signals import post_migrate
 from django.dispatch import receiver
 
 
-class Provider(models.Model):
-    user = models.OneToOneField(User, on_delete=models.CASCADE, related_name="provider")
-    trade = models.CharField(max_length=50)  # e.g. "Plumber"
-    skills = models.CharField(max_length=200)  # "pipes, drains"
-    hourly_rate = models.DecimalField(max_digits=6, decimal_places=2, default=0)
-    rating = models.DecimalField(max_digits=3, decimal_places=2, default=5.0)
-    city = models.CharField(max_length=80, blank=True)
-
-    def __str__(self):
-        return f"{self.user.username} ({self.trade})"
-
-
 class Client(models.Model):
     user = models.OneToOneField(User, on_delete=models.CASCADE, related_name="client")
     city = models.CharField(max_length=80, blank=True)
