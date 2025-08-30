@@ -89,6 +89,30 @@ class Command(BaseCommand):
                 'eta': '25 minutes',
                 'hourly_rate': 78.00,
                 'rating': 4.8
+            },
+            {
+                'provider_id': 'PROV011',
+                'provider_name': 'Auto Care Mechanics',
+                'job_type': 'mechanic',
+                'eta': '45 minutes',
+                'hourly_rate': 85.00,
+                'rating': 4.7
+            },
+            {
+                'provider_id': 'PROV012',
+                'provider_name': 'Quick Lock Services',
+                'job_type': 'locksmith',
+                'eta': '20 minutes',
+                'hourly_rate': 95.00,
+                'rating': 4.9
+            },
+            {
+                'provider_id': 'PROV013',
+                'provider_name': 'Precision Carpentry',
+                'job_type': 'carpenter',
+                'eta': '1.5 hours',
+                'hourly_rate': 75.00,
+                'rating': 4.8
             }
         ]
 
