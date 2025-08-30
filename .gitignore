@@ -245,5 +245,3 @@ yarn-error.*
 # typescript
 *.tsbuildinfo
 
-#private profile pics
-driver*.jpg
