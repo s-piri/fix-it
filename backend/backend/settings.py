@@ -133,8 +133,20 @@ DEFAULT_AUTO_FIELD = "django.db.models.BigAutoField"
 
 AUTH_USER_MODEL = 'users.Client'
 
-CORS_ALLOW_ALL_ORIGINS = True  # Only for development
-## Should be false in prod or it will be a security risk!!
+# CORS settings for development
+CORS_ALLOWED_ORIGINS = [
+    "http://127.0.0.1:8081",
+    "http://localhost:8081",
+    "http://127.0.0.1:3000",
+    "http://localhost:3000",
+    "http://127.0.0.1:8000",
+    "http://localhost:8000",
+]
+
+CORS_ALLOW_CREDENTIALS = True
+
+# For development only - remove in production
+CORS_ALLOW_ALL_ORIGINS = False
 
 REST_FRAMEWORK = {
     'DEFAULT_RENDERER_CLASSES': [
