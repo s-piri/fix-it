@@ -7,11 +7,35 @@ import {
   TextInput,
   Pressable,
   StyleSheet,
+  Alert,
 } from "react-native"; 
-import { useNavigation } from "@react-navigation/native";
+import { useNavigation, useRoute } from "@react-navigation/native";
 import ServiceCard from "./card";
+import { Animated, Easing } from "react-native";
+import { ActivityIndicator } from "react-native";
 
+function useFadeInUp(delay = 0) {
+  const opacity = React.useRef(new Animated.Value(0)).current;
+  const translateY = React.useRef(new Animated.Value(12)).current;
 
+  React.useEffect(() => {
+    Animated.timing(opacity, {
+      toValue: 1,
+      duration: 350,
+      delay,
+      useNativeDriver: true,
+    }).start();
+    Animated.timing(translateY, {
+      toValue: 0,
+      duration: 350,
+      delay,
+      easing: Easing.out(Easing.cubic),
+      useNativeDriver: true,
+    }).start();
+  }, [delay, opacity, translateY]);
+
+  return { opacity, transform: [{ translateY }] };
+}
 
 
 const SERVICES = [
@@ -22,24 +46,71 @@ const SERVICES = [
   { id: 5, name: "Locksmith",   image: require("../../assets/role5.png") },
   { id: 6, name: "Cleaner",     image: require("../../assets/role6.png") },
 ];
+
 export default function HomeScreen() {
   const nav = useNavigation<any>();
+  const route = useRoute<any>();
   const [location, setLocation] = React.useState("");
   const [details, setDetails] = React.useState("");
   const [selected, setSelected] = React.useState<number | null>(null);
 
+  const handleLogout = () => {
+    // Use web-compatible confirmation dialog
+    const confirmed = window.confirm("Are you sure you want to logout?");
+    
+    if (confirmed) {
+      try {
+        // Call the logout function passed from App.tsx
+        if (route.params?.onLogout) {
+          route.params.onLogout();
+        } else {
+          // Fallback: direct localStorage removal and reload
+          localStorage.removeItem('user');
+          window.location.reload();
+        }
+      } catch (error) {
+        console.log('Error logging out:', error);
+      }
+    }
+  };
+
+  const ctaScale = React.useRef(new Animated.Value(1)).current;
+  const onCtaIn = () => {
+    Animated.spring(ctaScale, {
+      toValue: 0.9,              
+      speed: 20,                    
+      bounciness: 20,           
+      useNativeDriver: true,
+    }).start();
+  };
+  
+  const onCtaOut = () => {
+    Animated.spring(ctaScale, {
+      toValue: 1,                
+      speed: 12,                 
+      bounciness: 20,            
+      useNativeDriver: true,
+    }).start();
+  };
+  const logoOpacity = React.useRef(new Animated.Value(0)).current;
+  React.useEffect(() => {
+      Animated.timing(logoOpacity, { toValue: 1, duration: 500, useNativeDriver: true }).start();
+    }, [logoOpacity]);
   return (
     <ScrollView contentContainerStyle={[styles.page, { alignItems: "center", paddingHorizontal: 16 }]}>
       {/* content column */}
       <View style={styles.container}>
         {/* Nav bar (simple, static) */}
         <View style={styles.navbar}>
-          <Text style={styles.logo}>FIX IT</Text>
+          <Animated.Image
+            source={require("../../assets/logo.png")}
+            style={[styles.logoImage, { opacity: logoOpacity }]}
+          />
           <View style={styles.navLinks}>
             <Text style={styles.navLink}>About</Text>
             <Text style={styles.navLink}>Help</Text>
-            <Pressable style={styles.signInBtn} onPress={() => nav.navigate("Login")}>
-              <Text style={styles.signInText}>Sign In</Text>
+            <Pressable style={styles.signInBtn} onPress={handleLogout}>
+              <Text style={styles.signInText}>Logout</Text>
             </Pressable>
           </View>
         </View>
@@ -49,16 +120,19 @@ export default function HomeScreen() {
         <Text style={styles.sectionTitle}>Services</Text>
 
         <View style={styles.grid}>
-          {SERVICES.map((s) => (
-            <View key={s.id} style={styles.cardWrap}>
-            <ServiceCard
-              label={s.name}
-              icon={s.image}
-              selected={selected === s.id}
-              onPress={() => setSelected(s.id)}
-            />
-          </View>
-          ))}
+          {SERVICES.map((s, i) => {
+            const anim = useFadeInUp(i * 70); // stagger by 70ms
+            return (
+              <Animated.View key={s.id} style={[styles.cardWrap, anim]}>
+                <ServiceCard
+                  label={s.name}
+                  icon={s.image}
+                  selected={selected === s.id}
+                  onPress={() => setSelected(s.id)}
+                />
+              </Animated.View>
+            );
+          })}
         </View>
 
         {/* Request a Fixer */}
@@ -79,12 +153,17 @@ export default function HomeScreen() {
             onChangeText={setDetails}
             style={[styles.input, { height: 56 }]}
           />
+          <Animated.View style={{ transform: [{ scale: ctaScale }] }}>
           <Pressable
+            onPressIn={onCtaIn}
+            onPressOut={onCtaOut}
+    
             onPress={() => nav.navigate("Finding", { location, details })}
             style={styles.cta}
           >
             <Text style={styles.ctaText}>Fix It!</Text>
           </Pressable>
+        </Animated.View>
         </View>
       </View>
     </ScrollView>
@@ -102,7 +181,8 @@ const styles = StyleSheet.create({
   },
   container: {
     width: "100%",
-    // maxWidth: 1120,       
+    // maxWidth: 1120,  
+    minHeight: 1000,     
     alignSelf: "center",
     paddingHorizontal: 16, 
     paddingTop: 16,
@@ -141,7 +221,7 @@ const styles = StyleSheet.create({
     fontFamily: "Geologica",
     color: BRAND,
     textAlign: "center",
-    marginVertical: 60,
+    marginVertical: 70,
   },
 
   grid: {
@@ -161,7 +241,7 @@ const styles = StyleSheet.create({
     borderRadius: 10,
     padding: 18,
     alignItems: "center",
-    marginBottom: 16,
+    marginBottom: 30,
   },
   cardImage: {
     width: 160,
@@ -169,8 +249,8 @@ const styles = StyleSheet.create({
     resizeMode: "contain",
     marginBottom: 8,
   },
-  cardTitle: { fontWeight: "700", fontSize: 14 },
-
+  cardTitle: { fontWeight: "700", fontSize: 14 , fontFamily: "Geologica"},
+  cardWrap: {marginBottom: 20},
   form: {
     alignSelf: "center",
     width: "100%",
@@ -187,13 +267,18 @@ const styles = StyleSheet.create({
     paddingVertical: 14,
     fontSize: 16,
   },
+  logoImage: {
+    width: 100,  
+    height: 20,   
+    resizeMode: "contain", 
+  },
   cta: {
     alignSelf: "center",
     backgroundColor: BRAND,
     borderRadius: 10,
     paddingVertical: 14,
     paddingHorizontal: 28,
-    marginTop: 6,
+    marginTop: 12,
   },
-  ctaText: { color: "#fff", fontWeight: "700", fontFamily: "Geologica",},
+  ctaText: { color: "#fff", fontWeight: "400", fontFamily: "Geologica",},
 });
