@@ -1,22 +1,44 @@
 import React, { useState } from "react";
-import { View, Text, TextInput, Pressable, StyleSheet, ActivityIndicator, Alert } from "react-native";
-import { useNavigation } from "@react-navigation/native";
-import { login } from "../api/auth"; // <-- add
+import { View, Text, TextInput, Pressable, StyleSheet, ActivityIndicator, Alert, Image } from "react-native";
+import { useNavigation, useRoute } from "@react-navigation/native";
+import { login } from "../api/auth";
+
+const LOGO = require("../../assets/logo.png");
 
 export default function LoginScreen() {
   const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
-  const [loading, setLoading]   = useState(false);
+  const [loading, setLoading] = useState(false);
   const navigation = useNavigation<any>();
+  const route = useRoute<any>();
 
   const handleSubmit = async () => {
     if (!username || !password) return Alert.alert("Missing info", "Enter username and password.");
     try {
       setLoading(true);
       const { user } = await login(username, password);
+      
+      console.log('Login successful:', user);
+      
+      // Store user data directly
+      localStorage.setItem('user', JSON.stringify(user));
+      console.log('User data stored in localStorage');
+      
+      // Call the onLogin callback if available
+      if (route.params?.onLogin) {
+        console.log('Calling onLogin callback');
+        route.params.onLogin(user);
+      }
+      
       Alert.alert("Login successful", `Welcome, ${user.first_name || user.username}!`);
-      navigation.navigate("Home");
+      
+      // Force app reload after a short delay to ensure state updates
+      setTimeout(() => {
+        window.location.reload();
+      }, 1000);
+      
     } catch (e:any) {
+      console.log('Login error:', e);
       Alert.alert("Login failed", e.message ?? "Please try again.");
     } finally {
       setLoading(false);
@@ -27,8 +49,7 @@ export default function LoginScreen() {
     <View style={styles.container}>
       <View style={styles.card}>
         <View style={styles.header}>
-          <Text style={styles.title}>Log In</Text>
-          <Text style={styles.logo}>FIX IT</Text>
+          <Image source={LOGO} style={styles.logoImage} />
         </View>
 
         <View style={styles.form}>

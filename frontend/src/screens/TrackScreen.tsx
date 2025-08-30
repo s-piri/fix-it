@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { useNavigation } from '@react-navigation/native';
+import { Animated } from 'react-native';
 
 interface Location {
   latitude: number;
@@ -318,6 +319,39 @@ const TrackScreen: React.FC<TrackScreenProps> = ({ jobId = "12345" }) => {
       </div>
     );
   }
+
+  const pro = {
+    name: "Van Songyot",
+    trade: "Locksmith",
+    rating: 4.9,
+    jobs: 124,
+    etaMin: Math.max(eta, 1),
+    vehicle: "Toyota HiAce",
+    // remote placeholder image so there's no bundler path issues
+    // replace with: photo: require("../../assets/pros/alex.png") once you add a file
+    photo: require("../../assets/pros/driver1.jpg"),
+  };
+
+  // --- Popup animation state ---
+  const [showProfile, setShowProfile] = React.useState(true); // show immediately on match
+  const veilOpacity = React.useRef(new Animated.Value(0)).current;
+  const sheetOpacity = React.useRef(new Animated.Value(0)).current;
+  const sheetScale = React.useRef(new Animated.Value(0.92)).current;
+
+  React.useEffect(() => {
+    if (showProfile) {
+      Animated.parallel([
+        Animated.timing(veilOpacity, { toValue: 1, duration: 150, useNativeDriver: true }),
+        Animated.timing(sheetOpacity, { toValue: 1, duration: 180, useNativeDriver: true }),
+        Animated.spring(sheetScale, { toValue: 1, useNativeDriver: true, friction: 7, tension: 90 }),
+      ]).start();
+    } else {
+      Animated.parallel([
+        Animated.timing(veilOpacity, { toValue: 0, duration: 120, useNativeDriver: true }),
+        Animated.timing(sheetOpacity, { toValue: 0, duration: 120, useNativeDriver: true }),
+      ]).start();
+    }
+  }, [showProfile, veilOpacity, sheetOpacity, sheetScale]);
 
   return (
     <div style={styles.container}>
