@@ -51,8 +51,8 @@ export default function ServiceCard({ icon, label, onPress, selected }: Props) {
 
 const styles = StyleSheet.create({
   card: {
-    width: 160,
-    height: 140,
+    width: 200,
+    height: 180,
     backgroundColor: "#f3f3f3",
     borderRadius: 12,
     padding: 16,
@@ -82,6 +82,6 @@ const styles = StyleSheet.create({
     elevation: 6,
   },
   imageWrap: { height: 56, justifyContent: "center" },
-  image: { width: 64, height: 56 },
-  label: { marginTop: 10, fontWeight: "600", color: "#111" },
+  image: { width:80, height: 72 },
+  label: { marginTop: 25, fontWeight: "500", color: "#111", fontFamily: "Geologica" },
 });

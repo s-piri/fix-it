@@ -2,6 +2,8 @@
   "extends": "expo/tsconfig.base",
   "compilerOptions": {
     "jsx": "react-jsx",
+    "target": "es2017",
+    "lib": ["es2017", "dom"],
     "strict": true,
     "skipLibCheck": true,
     "esModuleInterop": true,
