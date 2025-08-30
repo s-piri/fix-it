@@ -355,8 +355,8 @@ const TrackScreen: React.FC<TrackScreenProps> = ({ jobId = "12345" }) => {
 
   return (
     <div style={styles.container}>
-      <h1 style={styles.title}>Your pro is on the way</h1>
-      <p style={styles.eta}>ETA: ~{eta} min</p>
+      <h1 style={styles.title}>Your FIXR is on the way</h1>
+      <p style={styles.eta}>ETA: {eta} min(s)</p>
       
       <div style={styles.mapContainer}>
         <div style={styles.mapBackground}>
