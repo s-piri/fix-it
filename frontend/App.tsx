@@ -6,6 +6,7 @@ import BookScreen from "./src/screens/BookScreen";
 import FindingScreen from "./src/screens/FindingScreen";
 import TrackScreen from "./src/screens/TrackScreen";
 import ReceiptScreen from "./src/screens/ReceiptScreen";
+import LoginPage from "./src/screens/login_page";
 
 const Stack = createNativeStackNavigator();
 
@@ -18,6 +19,7 @@ export default function App() {
         <Stack.Screen name="Finding" component={FindingScreen} options={{ title: "Finding a Pro" }} />
         <Stack.Screen name="Track" component={TrackScreen} options={{ title: "Track" }} />
         <Stack.Screen name="Receipt" component={ReceiptScreen} options={{ title: "Receipt" }} />
+        <Stack.Screen name="Login" component={LoginPage} options={{ title: "Log in" }} />
       </Stack.Navigator>
     </NavigationContainer>
   );

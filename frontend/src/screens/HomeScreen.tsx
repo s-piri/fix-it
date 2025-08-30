@@ -34,7 +34,7 @@ export default function HomeScreen() {
             <Text style={styles.navLink}>Fix Now</Text>
             <Text style={styles.navLink}>About</Text>
             <Text style={styles.navLink}>Help</Text>
-            <Pressable style={styles.signInBtn}>
+            <Pressable style={styles.signInBtn} onPress={() => nav.navigate("Login")}>
               <Text style={styles.signInText}>Sign In</Text>
             </Pressable>
           </View>
