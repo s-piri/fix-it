@@ -10,6 +10,9 @@ export const trackScreenStyles = StyleSheet.create({
     padding: 16, 
     paddingTop: 32,
     alignItems: "center",
+    maxWidth: 800,
+    alignSelf: "center",
+    width: "100%",
   },
   title: { fontSize: 20, fontWeight: "700" },
   map: {

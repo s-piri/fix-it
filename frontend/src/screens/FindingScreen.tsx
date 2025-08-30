@@ -58,16 +58,24 @@ export default function FindingScreen() {
   }, [jobId, jobType, nav]);
 
   return (
-    <View style={{ flex: 1, alignItems: "center", justifyContent: "center" }}>
-      <Text style={{ fontSize: 18, fontWeight: "600" }}>
+    <View style={{ 
+      flex: 1, 
+      alignItems: "center", 
+      justifyContent: "center",
+      maxWidth: 600,
+      alignSelf: "center",
+      width: "100%",
+      padding: 20,
+    }}>
+      <Text style={{ fontSize: 18, fontWeight: "600", textAlign: "center" }}>
         {isLoading ? "Finding a nearby licensed FIXR…" : 
          error ? "Error finding provider..." : 
          "Provider found! Redirecting..."}
       </Text>
-      <Text style={{ color: "#6B7280", marginTop: 8 }}>Job: {jobId}</Text>
-      {jobType && <Text style={{ color: "#6B7280", marginTop: 4 }}>Type: {jobType}</Text>}
-      {error && <Text style={{ color: "#EF4444", marginTop: 8 }}>{error}</Text>}
-      {provider && <Text style={{ color: "#10B981", marginTop: 8 }}>Provider: {provider.provider_name}</Text>}
+      <Text style={{ color: "#6B7280", marginTop: 8, textAlign: "center" }}>Job: {jobId}</Text>
+      {jobType && <Text style={{ color: "#6B7280", marginTop: 4, textAlign: "center" }}>Type: {jobType}</Text>}
+      {error && <Text style={{ color: "#EF4444", marginTop: 8, textAlign: "center" }}>{error}</Text>}
+      {provider && <Text style={{ color: "#10B981", marginTop: 8, textAlign: "center" }}>Provider: {provider.provider_name}</Text>}
     </View>
   );
 }
