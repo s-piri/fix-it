@@ -17,6 +17,8 @@ class Provider(models.Model):
     hourly_rate = models.DecimalField(max_digits=8, decimal_places=2)
     is_available = models.BooleanField(default=True)
     rating = models.DecimalField(max_digits=3, decimal_places=2, default=0.00)
+    jobs = models.IntegerField(default=100)  # Number of jobs completed
+    vehicle = models.CharField(max_length=100, default="Toyota HiAce")
     profile_picture = models.ImageField(upload_to='provider_photos/', null=True, blank=True)
     
     def __str__(self):

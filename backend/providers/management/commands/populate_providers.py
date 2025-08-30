@@ -16,7 +16,10 @@ class Command(BaseCommand):
                 'job_type': 'plumbing',
                 'eta': '30 minutes',
                 'hourly_rate': 75.00,
-                'rating': 4.8
+                'rating': 4.8,
+                'jobs': 124,
+                'vehicle': 'Toyota HiAce',
+                'is_available': True
             },
             {
                 'provider_id': 'PROV002',
@@ -24,7 +27,10 @@ class Command(BaseCommand):
                 'job_type': 'electrical',
                 'eta': '45 minutes',
                 'hourly_rate': 85.00,
-                'rating': 4.9
+                'rating': 4.9,
+                'jobs': 89,
+                'vehicle': 'Ford Transit',
+                'is_available': True
             },
             {
                 'provider_id': 'PROV003',
@@ -32,7 +38,10 @@ class Command(BaseCommand):
                 'job_type': 'plumbing',
                 'eta': '20 minutes',
                 'hourly_rate': 80.00,
-                'rating': 4.6
+                'rating': 4.6,
+                'jobs': 156,
+                'vehicle': 'Mercedes Sprinter',
+                'is_available': True
             },
             {
                 'provider_id': 'PROV004',
@@ -40,7 +49,10 @@ class Command(BaseCommand):
                 'job_type': 'electrical',
                 'eta': '35 minutes',
                 'hourly_rate': 90.00,
-                'rating': 4.8
+                'rating': 4.8,
+                'jobs': 67,
+                'vehicle': 'Nissan NV200',
+                'is_available': True
             },
             {
                 'provider_id': 'PROV005',
@@ -48,7 +60,10 @@ class Command(BaseCommand):
                 'job_type': 'handyman',
                 'eta': '1 hour',
                 'hourly_rate': 65.00,
-                'rating': 4.7
+                'rating': 4.7,
+                'jobs': 203,
+                'vehicle': 'Chevrolet Express',
+                'is_available': True
             },
             {
                 'provider_id': 'PROV006',
@@ -56,7 +71,10 @@ class Command(BaseCommand):
                 'job_type': 'handyman',
                 'eta': '1.5 hours',
                 'hourly_rate': 70.00,
-                'rating': 4.9
+                'rating': 4.9,
+                'jobs': 178,
+                'vehicle': 'Toyota HiAce',
+                'is_available': True
             },
             {
                 'provider_id': 'PROV007',
@@ -64,7 +82,10 @@ class Command(BaseCommand):
                 'job_type': 'plumbing',
                 'eta': '15 minutes',
                 'hourly_rate': 95.00,
-                'rating': 4.5
+                'rating': 4.5,
+                'jobs': 92,
+                'vehicle': 'Ford Transit',
+                'is_available': True
             },
             {
                 'provider_id': 'PROV008',
@@ -72,7 +93,10 @@ class Command(BaseCommand):
                 'job_type': 'electrical',
                 'eta': '40 minutes',
                 'hourly_rate': 88.00,
-                'rating': 4.7
+                'rating': 4.7,
+                'jobs': 145,
+                'vehicle': 'Mercedes Sprinter',
+                'is_available': True
             },
             {
                 'provider_id': 'PROV009',
@@ -80,7 +104,10 @@ class Command(BaseCommand):
                 'job_type': 'handyman',
                 'eta': '2 hours',
                 'hourly_rate': 60.00,
-                'rating': 4.4
+                'rating': 4.4,
+                'jobs': 234,
+                'vehicle': 'Nissan NV200',
+                'is_available': True
             },
             {
                 'provider_id': 'PROV010',
@@ -88,7 +115,10 @@ class Command(BaseCommand):
                 'job_type': 'plumbing',
                 'eta': '25 minutes',
                 'hourly_rate': 78.00,
-                'rating': 4.8
+                'rating': 4.8,
+                'jobs': 167,
+                'vehicle': 'Chevrolet Express',
+                'is_available': True
             },
             {
                 'provider_id': 'PROV011',
@@ -96,7 +126,10 @@ class Command(BaseCommand):
                 'job_type': 'mechanic',
                 'eta': '45 minutes',
                 'hourly_rate': 85.00,
-                'rating': 4.7
+                'rating': 4.7,
+                'jobs': 98,
+                'vehicle': 'Toyota HiAce',
+                'is_available': True
             },
             {
                 'provider_id': 'PROV012',
@@ -104,7 +137,10 @@ class Command(BaseCommand):
                 'job_type': 'locksmith',
                 'eta': '20 minutes',
                 'hourly_rate': 95.00,
-                'rating': 4.9
+                'rating': 4.9,
+                'jobs': 76,
+                'vehicle': 'Ford Transit',
+                'is_available': True
             },
             {
                 'provider_id': 'PROV013',
@@ -112,7 +148,10 @@ class Command(BaseCommand):
                 'job_type': 'carpenter',
                 'eta': '1.5 hours',
                 'hourly_rate': 75.00,
-                'rating': 4.8
+                'rating': 4.8,
+                'jobs': 112,
+                'vehicle': 'Mercedes Sprinter',
+                'is_available': True
             }
         ]
 
