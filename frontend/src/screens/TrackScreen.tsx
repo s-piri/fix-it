@@ -56,9 +56,16 @@ export default function TrackScreen() {
   const [status, setStatus] = React.useState<Status>("enroute");
   
   // Location tracking
-  const [proLocation, setProLocation] = React.useState<Location>({
-    latitude: 37.78825,
-    longitude: -122.4324,
+  const [proLocation, setProLocation] = React.useState<Location>(() => {
+    // Randomize initial provider location within a reasonable distance
+    const baseLat = 37.78925; // User latitude
+    const baseLng = -122.4314; // User longitude
+    const randomOffset = (Math.random() - 0.5) * 0.03; // Random offset within ~1km
+    
+    return {
+      latitude: baseLat + randomOffset,
+      longitude: baseLng + randomOffset,
+    };
   });
   const [userLocation, setUserLocation] = React.useState<Location>({
     latitude: 37.78925,
@@ -78,17 +85,35 @@ export default function TrackScreen() {
     }
   }, [eta, nav, jobId]);
 
-  // Simulate provider movement
+  // Simulate provider movement towards user
   React.useEffect(() => {
     const moveInterval = setInterval(() => {
-      setProLocation(prev => ({
-        latitude: prev.latitude + (Math.random() - 0.5) * 0.001,
-        longitude: prev.longitude + (Math.random() - 0.5) * 0.001,
-      }));
-    }, 3000);
+      setProLocation(prev => {
+        // Calculate direction towards user
+        const latDiff = userLocation.latitude - prev.latitude;
+        const lngDiff = userLocation.longitude - prev.longitude;
+        
+        // Calculate distance to user
+        const distance = Math.sqrt(latDiff * latDiff + lngDiff * lngDiff);
+        
+        // If very close to user, stop moving
+        if (distance < 0.0001) {
+          return prev;
+        }
+        
+        // Move towards user at a slow, steady pace
+        const moveSpeed = 0.0001; // Adjust this to control movement speed
+        const moveRatio = Math.min(moveSpeed / distance, 1);
+        
+        return {
+          latitude: prev.latitude + (latDiff * moveRatio),
+          longitude: prev.longitude + (lngDiff * moveRatio),
+        };
+      });
+    }, 1000); // Update every second for smoother movement
 
     return () => clearInterval(moveInterval);
-  }, []);
+  }, [userLocation]);
 
   // Add CSS animations
   React.useEffect(() => {
