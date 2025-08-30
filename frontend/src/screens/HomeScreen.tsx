@@ -29,25 +29,23 @@ export default function HomeScreen() {
   const [selected, setSelected] = React.useState<number | null>(null);
 
   const handleLogout = () => {
-    Alert.alert(
-      "Logout",
-      "Are you sure you want to logout?",
-      [
-        { text: "Cancel", style: "cancel" },
-        { 
-          text: "Logout", 
-          onPress: () => {
-            try {
-              localStorage.removeItem('user');
-              // Force app to re-render and show login
-              window.location.reload();
-            } catch (error) {
-              console.log('Error logging out:', error);
-            }
-          }
+    // Use web-compatible confirmation dialog
+    const confirmed = window.confirm("Are you sure you want to logout?");
+    
+    if (confirmed) {
+      try {
+        // Call the logout function passed from App.tsx
+        if (route.params?.onLogout) {
+          route.params.onLogout();
+        } else {
+          // Fallback: direct localStorage removal and reload
+          localStorage.removeItem('user');
+          window.location.reload();
         }
-      ]
-    );
+      } catch (error) {
+        console.log('Error logging out:', error);
+      }
+    }
   };
 
   return (
