@@ -7,7 +7,7 @@ import {
   TextInput,
   Pressable,
   StyleSheet,
-} from "react-native";
+} from "react-native"; 
 import { useNavigation } from "@react-navigation/native";
 
 const SERVICES = [
@@ -31,7 +31,6 @@ export default function HomeScreen() {
         <View style={styles.navbar}>
           <Text style={styles.logo}>FIX IT</Text>
           <View style={styles.navLinks}>
-            <Text style={styles.navLink}>Fix Now</Text>
             <Text style={styles.navLink}>About</Text>
             <Text style={styles.navLink}>Help</Text>
             <Pressable style={styles.signInBtn} onPress={() => nav.navigate("Login")}>
