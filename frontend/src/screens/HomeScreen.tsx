@@ -11,6 +11,7 @@ import {
 import { useNavigation } from "@react-navigation/native";
 import ServiceCard from "./card";
 
+
 const SERVICES = [
   { id: 1, name: "Plumber",     image: require("../../assets/role3.png") },
   { id: 2, name: "Electrician", image: require("../../assets/role1.png") },
