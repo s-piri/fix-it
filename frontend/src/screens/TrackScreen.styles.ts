@@ -5,7 +5,12 @@ const BORDER = "#E5E7EB";
 const MUTED = "#F3F4F6";
 
 export const trackScreenStyles = StyleSheet.create({
-  screen: { flex: 1, padding: 16, paddingTop: 32 },
+  screen: { 
+    flex: 1, 
+    padding: 16, 
+    paddingTop: 32,
+    alignItems: "center",
+  },
   title: { fontSize: 20, fontWeight: "700" },
   map: {
     marginTop: 12,
@@ -19,7 +24,10 @@ export const trackScreenStyles = StyleSheet.create({
 
   // Interactive Map Styles
   mapContainer: {
-    flex: 1,
+    alignSelf: "center",
+    width: "90%",
+    maxWidth: 600,
+    height: 300,
     borderRadius: 16,
     overflow: "hidden",
     marginBottom: 24,
@@ -32,7 +40,6 @@ export const trackScreenStyles = StyleSheet.create({
     borderWidth: 2,
     borderColor: BORDER,
     position: "relative",
-    minHeight: 400,
   },
   mapBackground: {
     width: "100%",
