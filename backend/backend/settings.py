@@ -127,6 +127,8 @@ STATIC_URL = "static/"
 
 DEFAULT_AUTO_FIELD = "django.db.models.BigAutoField"
 
+AUTH_USER_MODEL = 'users.Client'
+
 CORS_ALLOW_ALL_ORIGINS = True  # Only for development
 ## Should be false in prod or it will be a security risk!!
 
