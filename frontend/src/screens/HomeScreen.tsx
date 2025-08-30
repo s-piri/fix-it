@@ -100,7 +100,7 @@ export default function HomeScreen() {
             style={[styles.input, { height: 56 }]}
           />
           <Pressable
-            onPress={() => nav.navigate("Book", { location, details })}
+            onPress={() => nav.navigate("Finding", { location, details })}
             style={styles.cta}
           >
             <Text style={styles.ctaText}>Fix It!</Text>
