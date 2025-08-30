@@ -121,7 +121,7 @@ export default function HomeScreen() {
 
         <View style={styles.grid}>
           {SERVICES.map((s, i) => {
-            const anim = useFadeInUp(i * 70); // stagger by 70ms
+            const anim = useFadeInUp(i * 70);
             return (
               <Animated.View key={s.id} style={[styles.cardWrap, anim]}>
                 <ServiceCard
