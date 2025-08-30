@@ -22,6 +22,27 @@ interface Location {
   longitude: number;
 }
 
+// Helper function to map backend profile picture paths to local assets
+const getProfilePicture = (profilePicturePath?: string) => {
+  if (!profilePicturePath) {
+    return require("../../assets/pros/driver1.jpg");
+  }
+  
+  // Map backend paths to local assets
+  if (profilePicturePath.includes('1.png')) {
+    return require("../../assets/pros/1.png");
+  } else if (profilePicturePath.includes('2.png')) {
+    return require("../../assets/pros/2.png");
+  } else if (profilePicturePath.includes('3.png')) {
+    return require("../../assets/pros/3.png");
+  } else if (profilePicturePath.includes('4.png')) {
+    return require("../../assets/pros/4.png");
+  }
+  
+  // Default fallback
+  return require("../../assets/pros/driver1.jpg");
+};
+
 // Helper function to process backend provider data for frontend display
 const processProviderData = (provider: Provider) => {
   // Extract first name from provider_name
@@ -53,7 +74,7 @@ const processProviderData = (provider: Provider) => {
     distanceKm: (Math.random() * 5 + 0.5).toFixed(1), // Random distance since not in backend
     etaMin: etaMinutes,
     vehicle: provider.vehicle || "Toyota HiAce",
-    photo: provider.profile_picture ? { uri: provider.profile_picture } : require("../../assets/pros/driver1.jpg"),
+    photo: getProfilePicture(provider.profile_picture),
     // Include all backend data for ReceiptScreen
     provider_id: provider.provider_id || "FALLBACK_001",
     provider_name: provider.provider_name || "Professional Provider",
@@ -193,7 +214,7 @@ export default function TrackScreen() {
     distanceKm: 2.1,
     etaMin: Math.max(eta, 1),
     vehicle: "Toyota HiAce",
-    photo: require("../../assets/pros/driver1.jpg"),
+    photo: getProfilePicture(),
   };
 
   // --- Popup animation state ---

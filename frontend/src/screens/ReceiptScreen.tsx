@@ -2,6 +2,27 @@ import React from "react";
 import { View, Text, Pressable, TextInput, Image, StyleSheet } from "react-native";
 import { useRoute } from "@react-navigation/native";
 
+// Helper function to map backend profile picture paths to local assets
+const getProfilePicture = (profilePicturePath?: string) => {
+  if (!profilePicturePath) {
+    return require("../../assets/pros/driver1.jpg");
+  }
+  
+  // Map backend paths to local assets
+  if (profilePicturePath.includes('1.png')) {
+    return require("../../assets/pros/1.png");
+  } else if (profilePicturePath.includes('2.png')) {
+    return require("../../assets/pros/2.png");
+  } else if (profilePicturePath.includes('3.png')) {
+    return require("../../assets/pros/3.png");
+  } else if (profilePicturePath.includes('4.png')) {
+    return require("../../assets/pros/4.png");
+  }
+  
+  // Default fallback
+  return require("../../assets/pros/driver1.jpg");
+};
+
 type Pro = {
   name: string;
   trade: string;
@@ -29,15 +50,15 @@ export default function ReceiptScreen() {
     trade: pro.trade || "Service Provider",
     rating: pro.rating || 4.5,
     jobs: pro.jobs || 100,
-    photo: pro.photo || pro.profile_picture || require("../../assets/pros/driver1.jpg"),
+    photo: pro.photo || getProfilePicture(pro.profile_picture),
     provider_id: pro.provider_id,
     eta: pro.eta,
   } : {
     name: "John Doe",
-    trade: "Locksmith",
+    trade: "Cleaner",
     rating: 4.9,
     jobs: 124,
-    photo: require("../../assets/pros/driver1.jpg"),
+    photo: getProfilePicture(),
   };
 
   const handleSubmitRating = () => {
