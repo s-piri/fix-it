@@ -156,15 +156,39 @@ class Command(BaseCommand):
             },
             {
                 'provider_id': 'PROV013',
-                'provider_name': 'Precision Carpentry',
-                'job_type': 'carpenter',
-                'eta': '1.5 hours',
-                'hourly_rate': 75.00,
-                'rating': 4.8,
-                'jobs': 112,
-                'vehicle': 'Mercedes Sprinter',
+                'provider_name': 'Sparkle Clean Services',
+                'job_type': 'cleaner',
+                'eta': '45 minutes',
+                'hourly_rate': 65.00,
+                'rating': 4.7,
+                'jobs': 89,
+                'vehicle': 'Nissan NV200',
                 'is_available': True,
                 'profile_picture': './frontend/assets/pros/1.png'
+            },
+            {
+                'provider_id': 'PROV014',
+                'provider_name': 'Quick Clean Pro',
+                'job_type': 'cleaner',
+                'eta': '30 minutes',
+                'hourly_rate': 70.00,
+                'rating': 4.9,
+                'jobs': 156,
+                'vehicle': 'Ford Transit',
+                'is_available': True,
+                'profile_picture': './frontend/assets/pros/2.png'
+            },
+            {
+                'provider_id': 'PROV015',
+                'provider_name': 'Fresh & Clean Co',
+                'job_type': 'cleaner',
+                'eta': '1 hour',
+                'hourly_rate': 60.00,
+                'rating': 4.6,
+                'jobs': 203,
+                'vehicle': 'Toyota HiAce',
+                'is_available': True,
+                'profile_picture': './frontend/assets/pros/3.png'
             }
         ]
 
