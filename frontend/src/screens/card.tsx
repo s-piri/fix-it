@@ -23,7 +23,6 @@ export default function ServiceCard({ icon, label, onPress }: Props) {
       style={[
         styles.card,
         glow && styles.cardGlow,
-        // slight lift effect on web only
         glow && Platform.OS === "web" ? { transform: [{ translateY: -2 }] } : null,
       ]}
     >
