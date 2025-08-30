@@ -39,12 +39,12 @@ function useFadeInUp(delay = 0) {
 
 
 const SERVICES = [
-  { id: 1, name: "Plumber",     image: require("../../assets/role3.png") },
-  { id: 2, name: "Electrician", image: require("../../assets/role1.png") },
-  { id: 3, name: "Handyman",    image: require("../../assets/role2.png") },
-  { id: 4, name: "Mechanic",    image: require("../../assets/role4.png") },
-  { id: 5, name: "Locksmith",   image: require("../../assets/role5.png") },
-  { id: 6, name: "Cleaner",     image: require("../../assets/role6.png") },
+  { id: 1, name: "Plumber",     jobType: "plumbing", image: require("../../assets/role3.png") },
+  { id: 2, name: "Electrician", jobType: "electrical", image: require("../../assets/role1.png") },
+  { id: 3, name: "Handyman",    jobType: "handyman", image: require("../../assets/role2.png") },
+  { id: 4, name: "Mechanic",    jobType: "mechanic", image: require("../../assets/role4.png") },
+  { id: 5, name: "Locksmith",   jobType: "locksmith", image: require("../../assets/role5.png") },
+  { id: 6, name: "Cleaner",   jobType: "cleaner", image: require("../../assets/role6.png") },
 ];
 
 export default function HomeScreen() {
@@ -199,7 +199,7 @@ export default function HomeScreen() {
               const selectedService = SERVICES.find(s => s.id === selected);
               nav.navigate("Finding", {
                 jobId: `JOB_${Date.now()}`, // Generate unique job ID
-                jobType: selectedService?.name.toLowerCase(), // Convert to lowercase for backend
+                jobType: selectedService?.jobType, // Convert to lowercase for backend
                 location,
                 details,
                 service: selectedService?.name, // e.g., "Plumber"
