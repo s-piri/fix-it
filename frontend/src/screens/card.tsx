@@ -2,7 +2,7 @@ import { useState } from "react";
 import { Platform, Pressable, Image, Text, View, StyleSheet } from "react-native";
 
 type Props = {
-  icon: any;            // require("...") or { uri: "..." }
+  icon: any;     
   label: string;
   onPress?: () => void;
 };
@@ -11,7 +11,7 @@ export default function ServiceCard({ icon, label, onPress }: Props) {
   const [hovered, setHovered] = useState(false);
   const [pressed, setPressed] = useState(false);
 
-  const glow = hovered || pressed; // pressed for mobile, hovered for web
+  const glow = hovered || pressed; 
 
   return (
     <Pressable
@@ -45,26 +45,22 @@ const styles = StyleSheet.create({
     justifyContent: "center",
     alignItems: "center",
 
-    // base border + shadow
     borderWidth: 2,
     borderColor: "transparent",
     shadowColor: "#000",
     shadowOpacity: 0.08,
     shadowRadius: 6,
     shadowOffset: { width: 0, height: 4 },
-    // Android shadow
     elevation: 2,
     transitionProperty: Platform.OS === "web" ? "box-shadow, border-color, transform" : undefined,
     transitionDuration: Platform.OS === "web" ? "180ms" : undefined,
   },
   cardGlow: {
-    borderColor: "#22c55e", // green border
-    // iOS/Web shadow (web maps to box-shadow)
-    shadowColor: "rgba(34,197,94,1)", // #22c55e
+    borderColor: "#22c55e", 
+    shadowColor: "rgba(34,197,94,1)", 
     shadowOpacity: 0.5,
     shadowRadius: 10,
     shadowOffset: { width: 0, height: 6 },
-    // Android stronger elevation on press/hover
     elevation: 6,
   },
   imageWrap: { height: 56, justifyContent: "center" },
