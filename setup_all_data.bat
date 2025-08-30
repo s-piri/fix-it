@@ -31,7 +31,32 @@ if exist "db.sqlite3" (
     echo No existing database found, creating fresh one...
 )
 
-echo Applying migrations...
+REM Clean up old migration files (except __init__.py)
+echo Cleaning up old migration files...
+if exist "users\migrations\0*.py" (
+    del users\migrations\0*.py
+    echo Removed users migration files
+)
+if exist "providers\migrations\0*.py" (
+    del providers\migrations\0*.py
+    echo Removed providers migration files
+)
+
+echo Creating fresh migrations...
+python manage.py makemigrations providers
+if errorlevel 1 (
+    echo Error: Failed to create providers migrations
+    pause
+    exit /b 1
+)
+
+python manage.py makemigrations users
+if errorlevel 1 (
+    echo Error: Failed to create users migrations
+    pause
+    exit /b 1
+)
+
 python manage.py migrate
 if errorlevel 1 (
     echo Error: Failed to apply migrations
