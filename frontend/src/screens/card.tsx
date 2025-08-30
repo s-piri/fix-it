@@ -1,5 +1,5 @@
-import { useState } from "react";
-import { Platform, Pressable, Image, Text, View, StyleSheet } from "react-native";
+import { useState, useRef, useEffect } from "react";
+import { Platform, Pressable, Image, Text, View, StyleSheet, Animated } from "react-native";
 
 type Props = {
   icon: any;     
@@ -12,27 +12,40 @@ export default function ServiceCard({ icon, label, onPress, selected }: Props) {
   const [hovered, setHovered] = useState(false);
   const [pressed, setPressed] = useState(false);
 
+  // Animated scale value
+  const scale = useRef(new Animated.Value(1)).current;
+
+  useEffect(() => {
+    Animated.spring(scale, {
+      toValue: hovered || pressed ? 1.05 : 1,  // expand to 105% on hover/press
+      friction: 5,
+      tension: 150,
+      useNativeDriver: true,
+    }).start();
+  }, [hovered, pressed]);
+
   const glow = hovered || pressed;
 
   return (
-    <Pressable
-      onPress={onPress}
-      onHoverIn={() => setHovered(true)}
-      onHoverOut={() => setHovered(false)}
-      onPressIn={() => setPressed(true)}
-      onPressOut={() => setPressed(false)}
-      style={[
-        styles.card,
-        selected && styles.cardSelected,                               
-        (glow || selected) && styles.cardGlow,                         
-        (glow || selected) && Platform.OS === "web" ? { transform: [{ translateY: -2 }] } : null,
-      ]}
-    >
-      <View style={styles.imageWrap}>
-        <Image source={icon} style={styles.image} resizeMode="contain" />
-      </View>
-      <Text style={styles.label}>{label}</Text>
-    </Pressable>
+    <Animated.View style={{ transform: [{ scale }] }}>
+      <Pressable
+        onPress={onPress}
+        onHoverIn={() => setHovered(true)}
+        onHoverOut={() => setHovered(false)}
+        onPressIn={() => setPressed(true)}
+        onPressOut={() => setPressed(false)}
+        style={[
+          styles.card,
+          selected && styles.cardSelected,
+          (glow || selected) && styles.cardGlow,
+        ]}
+      >
+        <View style={styles.imageWrap}>
+          <Image source={icon} style={styles.image} resizeMode="contain" />
+        </View>
+        <Text style={styles.label}>{label}</Text>
+      </Pressable>
+    </Animated.View>
   );
 }
 
