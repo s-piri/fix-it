@@ -56,9 +56,16 @@ export default function TrackScreen() {
   const [status, setStatus] = React.useState<Status>("enroute");
   
   // Location tracking
-  const [proLocation, setProLocation] = React.useState<Location>({
-    latitude: 37.78825,
-    longitude: -122.4324,
+  const [proLocation, setProLocation] = React.useState<Location>(() => {
+    // Randomize initial provider location within a reasonable distance
+    const baseLat = 37.78925; // User latitude
+    const baseLng = -122.4314; // User longitude
+    const randomOffset = (Math.random()%10 - 0.5) * 0.01; // Random offset within ~1km
+    
+    return {
+      latitude: baseLat + randomOffset,
+      longitude: baseLng + randomOffset,
+    };
   });
   const [userLocation, setUserLocation] = React.useState<Location>({
     latitude: 37.78925,
@@ -78,17 +85,35 @@ export default function TrackScreen() {
     }
   }, [eta, nav, jobId]);
 
-  // Simulate provider movement
+  // Simulate provider movement towards user
   React.useEffect(() => {
     const moveInterval = setInterval(() => {
-      setProLocation(prev => ({
-        latitude: prev.latitude + (Math.random() - 0.5) * 0.001,
-        longitude: prev.longitude + (Math.random() - 0.5) * 0.001,
-      }));
-    }, 3000);
+      setProLocation(prev => {
+        // Calculate direction towards user
+        const latDiff = userLocation.latitude - prev.latitude;
+        const lngDiff = userLocation.longitude - prev.longitude;
+        
+        // Calculate distance to user
+        const distance = Math.sqrt(latDiff * latDiff + lngDiff * lngDiff);
+        
+        // If very close to user, stop moving
+        if (distance < 0.0001) {
+          return prev;
+        }
+        
+        // Move towards user at a slow, steady pace
+        const moveSpeed = 0.0001; // Adjust this to control movement speed
+        const moveRatio = Math.min(moveSpeed / distance, 1);
+        
+        return {
+          latitude: prev.latitude + (latDiff * moveRatio),
+          longitude: prev.longitude + (lngDiff * moveRatio),
+        };
+      });
+    }, 1000); // Update every second for smoother movement
 
     return () => clearInterval(moveInterval);
-  }, []);
+  }, [userLocation]);
 
   // Add CSS animations
   React.useEffect(() => {
@@ -218,22 +243,6 @@ export default function TrackScreen() {
             />
           </svg>
           
-          {/* Distance info panel */}
-          <View style={trackScreenStyles.infoPanel}>
-            <View style={trackScreenStyles.infoRow}>
-              <Text style={trackScreenStyles.infoLabel}>Distance:</Text>
-              <Text style={trackScreenStyles.infoValue}>{(Math.random() * 2 + 0.5).toFixed(1)} km</Text>
-            </View>
-            <View style={trackScreenStyles.infoRow}>
-              <Text style={trackScreenStyles.infoLabel}>Speed:</Text>
-              <Text style={trackScreenStyles.infoValue}>{(Math.random() * 20 + 30).toFixed(0)} km/h</Text>
-            </View>
-            <View style={trackScreenStyles.infoRow}>
-              <Text style={trackScreenStyles.infoLabel}>Route:</Text>
-              <Text style={[trackScreenStyles.infoValue, { color: getStatusColor(status) }]}>{getStatusText(status)}</Text>
-            </View>
-          </View>
-          
           {/* Map controls */}
           <View style={trackScreenStyles.mapControls}>
             <Pressable style={trackScreenStyles.mapButton}>
@@ -293,8 +302,6 @@ export default function TrackScreen() {
                 <Text style={trackScreenStyles.badge}>★ {pro.rating}</Text>
                 <Text style={trackScreenStyles.sep}>•</Text>
                 <Text style={trackScreenStyles.badge}>{pro.jobs} jobs</Text>
-                <Text style={trackScreenStyles.sep}>•</Text>
-                <Text style={trackScreenStyles.badge}>{pro.distanceKm} km away</Text>
               </View>
 
               <View style={[trackScreenStyles.row, { marginTop: 8 }]}>
