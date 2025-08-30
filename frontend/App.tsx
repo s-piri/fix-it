@@ -7,6 +7,8 @@ import FindingScreen from "./src/screens/FindingScreen";
 import TrackScreen from "./src/screens/TrackScreen";
 import ReceiptScreen from "./src/screens/ReceiptScreen";
 import LoginPage from "./src/screens/login_page";
+import { RootStackParamList } from "./src/types/navigation";
+
 
 const Stack = createNativeStackNavigator();
 
