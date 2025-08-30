@@ -1,34 +1,85 @@
-import React, { useState, useEffect } from 'react';
-import { useNavigation } from '@react-navigation/native';
-import { Animated } from 'react-native';
+import React from "react";
+import { View, Text, Pressable, Animated, Image, StyleSheet } from "react-native";
+import { useRoute, useNavigation, RouteProp } from "@react-navigation/native";
+import { Provider } from "../api/providers";
+import { trackScreenStyles } from "./TrackScreen.styles";
+
+type RootStackParamList = {
+  Track: { 
+    jobId: string; 
+    location?: string; 
+    details?: string;
+    provider?: Provider | null;
+  };
+  Receipt: { jobId: string };
+};
+type TrackRoute = RouteProp<RootStackParamList, "Track">;
+
+type Status = "enroute" | "onsite" | "completed";
 
 interface Location {
   latitude: number;
   longitude: number;
 }
 
-type JobStatus = "enroute" | "onsite" | "completed";
+// Helper function to generate random data for fields not in database
+const generateRandomProviderData = (provider: Provider) => {
+  const firstNames = ["Alex", "Sarah", "Mike", "Emma", "David", "Lisa", "John", "Maria", "Tom", "Anna"];
+  const lastNames = ["Smith", "Johnson", "Williams", "Brown", "Jones", "Garcia", "Miller", "Davis", "Rodriguez", "Martinez"];
+  const vehicles = ["Toyota HiAce", "Ford Transit", "Mercedes Sprinter", "Nissan NV200", "Chevrolet Express"];
+  const trades = ["Plumber", "Electrician", "Handyman", "Mechanic", "Locksmith", "Carpenter"];
+  
+  // Extract first name from provider_name or generate random
+  const nameParts = provider.provider_name.split(' ');
+  const firstName = nameParts[0] || firstNames[Math.floor(Math.random() * firstNames.length)];
+  const lastName = nameParts[1] || lastNames[Math.floor(Math.random() * lastNames.length)];
+  
+  return {
+    name: `${firstName} ${lastName}`,
+    trade: trades[Math.floor(Math.random() * trades.length)],
+    rating: (4.0 + Math.random() * 1.0).toFixed(1), // 4.0 to 5.0
+    jobs: Math.floor(Math.random() * 200) + 50, // 50 to 250 jobs
+    distanceKm: (Math.random() * 5 + 0.5).toFixed(1), // 0.5 to 5.5 km
+    etaMin: Math.max(provider.eta, 1),
+    vehicle: vehicles[Math.floor(Math.random() * vehicles.length)],
+    photo: require("../../assets/pros/driver1.jpg"), // fallback photo
+  };
+};
 
-interface TrackScreenProps {
-  jobId?: string;
-}
+export default function TrackScreen() {
+  const route = useRoute<TrackRoute>();
+  const nav = useNavigation<any>();
+  const { jobId, location, details, provider } = route.params ?? {};
 
-const TrackScreen: React.FC<TrackScreenProps> = ({ jobId = "12345" }) => {
-  const navigation = useNavigation();
-  const [showReceipt, setShowReceipt] = useState(false);
-  const [eta, setEta] = useState<number>(10);
-  const [status, setStatus] = useState<JobStatus>("enroute");
-  const [proLocation, setProLocation] = useState<Location>({
+  // ETA + status (mock progression)
+  const [eta, setEta] = React.useState(provider?.eta || 10);
+  const [status, setStatus] = React.useState<Status>("enroute");
+  
+  // Location tracking
+  const [proLocation, setProLocation] = React.useState<Location>({
     latitude: 37.78825,
     longitude: -122.4324,
   });
-  const [userLocation, setUserLocation] = useState<Location>({
+  const [userLocation, setUserLocation] = React.useState<Location>({
     latitude: 37.78925,
     longitude: -122.4314,
   });
 
-  // 模拟专业人员移动
-  useEffect(() => {
+  React.useEffect(() => {
+    const tick = setInterval(() => setEta((e) => Math.max(0, e - 1)), 1000);
+    return () => clearInterval(tick);
+  }, []);
+  
+  React.useEffect(() => {
+    if (eta === 3) setStatus("onsite");
+    if (eta === 0) {
+      setStatus("completed");
+      nav.navigate("Receipt", { jobId });
+    }
+  }, [eta, nav, jobId]);
+
+  // Simulate provider movement
+  React.useEffect(() => {
     const moveInterval = setInterval(() => {
       setProLocation(prev => ({
         latitude: prev.latitude + (Math.random() - 0.5) * 0.001,
@@ -39,248 +90,8 @@ const TrackScreen: React.FC<TrackScreenProps> = ({ jobId = "12345" }) => {
     return () => clearInterval(moveInterval);
   }, []);
 
-  // ETA 倒计时
-  useEffect(() => {
-    const tick = setInterval(() => {
-      setEta(e => Math.max(0, e - 1));
-    }, 1000);
-
-    return () => clearInterval(tick);
-  }, []);
-
-  // 状态更新
-  useEffect(() => {
-    if (eta === 3) setStatus("onsite");
-    if (eta === 0) {
-      setStatus("completed");
-      setTimeout(() => {
-        setShowReceipt(true);
-      }, 1000);
-    }
-  }, [eta]);
-
-  const getStatusColor = (currentStatus: JobStatus): string => {
-    switch(currentStatus) {
-      case "enroute": return "#F59E0B";
-      case "onsite": return "#10B981";
-      case "completed": return "#6366F1";
-      default: return "#6B7280";
-    }
-  };
-
-  const getStatusText = (currentStatus: JobStatus): string => {
-    switch(currentStatus) {
-      case "enroute": return "On the way";
-      case "onsite": return "Arrived on site";
-      case "completed": return "Job completed";
-      default: return "Unknown";
-    }
-  };
-
-  const handleComplete = () => {
-    // @ts-ignore
-    navigation.navigate('Receipt', { jobId });
-  };
-
-  const styles = {
-    container: {
-      display: 'flex',
-      flexDirection: 'column' as const,
-      height: '100vh',
-      padding: '24px',
-      paddingTop: '40px',
-      backgroundColor: '#FFFFFF',
-      maxWidth: '800px',
-      margin: '0 auto',
-      fontFamily: 'system-ui, -apple-system, sans-serif',
-      width: '100%'
-    },
-    title: {
-      fontSize: '28px',
-      fontWeight: 'bold',
-      color: '#1E40AF',
-      marginBottom: '12px',
-      margin: '0 0 12px 0'
-    },
-    eta: {
-      fontSize: '20px',
-      color: '#6B7280',
-      marginBottom: '24px',
-      margin: '0 0 24px 0'
-    },
-    mapContainer: {
-      flex: 1,
-      borderRadius: '16px',
-      overflow: 'hidden',
-      marginBottom: '24px',
-      boxShadow: '0 8px 25px -5px rgba(0, 0, 0, 0.1), 0 10px 10px -5px rgba(0, 0, 0, 0.04)',
-      backgroundColor: '#F3F4F6',
-      position: 'relative' as const,
-      minHeight: '400px',
-      border: '2px solid #E5E7EB'
-    },
-    mapBackground: {
-      width: '100%',
-      height: '100%',
-      background: 'linear-gradient(135deg, #EBF8FF 0%, #F0FDF4 50%, #FEF3C7 100%)',
-      position: 'relative' as const,
-      backgroundImage: `radial-gradient(circle at 20% 80%, rgba(120, 119, 198, 0.1) 0%, transparent 50%), 
-                        radial-gradient(circle at 80% 20%, rgba(255, 119, 198, 0.1) 0%, transparent 50%), 
-                        radial-gradient(circle at 40% 40%, rgba(120, 219, 255, 0.1) 0%, transparent 50%)`
-    },
-    gridOverlay: {
-      position: 'absolute' as const,
-      top: 0,
-      left: 0,
-      right: 0,
-      bottom: 0,
-      opacity: 0.2,
-      backgroundImage: `linear-gradient(rgba(59, 130, 246, 0.3) 1px, transparent 1px), 
-                        linear-gradient(90deg, rgba(59, 130, 246, 0.3) 1px, transparent 1px), 
-                        linear-gradient(rgba(34, 197, 94, 0.2) 1px, transparent 1px), 
-                        linear-gradient(90deg, rgba(34, 197, 94, 0.2) 1px, transparent 1px)`,
-      backgroundSize: '40px 40px, 40px 40px, 8px 8px, 8px 8px'
-    },
-    userMarker: {
-      position: 'absolute' as const,
-      left: '45%',
-      top: '60%',
-      transform: 'translate(-50%, -50%)',
-      zIndex: 10
-    },
-    proMarker: {
-      position: 'absolute' as const,
-      left: `${45 + (proLocation.longitude - (-122.4324)) * 5000}%`,
-      top: `${60 + (userLocation.latitude - proLocation.latitude) * 5000}%`,
-      transform: 'translate(-50%, -50%)',
-      zIndex: 10,
-      transition: 'all 1s ease-in-out'
-    },
-    markerDot: {
-      width: '24px',
-      height: '24px',
-      borderRadius: '50%',
-      border: '3px solid white',
-      boxShadow: '0 4px 8px rgba(0,0,0,0.3)'
-    },
-    userDot: {
-      backgroundColor: '#1E40AF'
-    },
-    proDot: {
-      backgroundColor: getStatusColor(status),
-      animation: 'pulse 2s infinite'
-    },
-    tooltip: {
-      position: 'absolute' as const,
-      bottom: '100%',
-      left: '50%',
-      transform: 'translateX(-50%)',
-      marginBottom: '12px',
-      backgroundColor: 'rgba(0,0,0,0.9)',
-      color: 'white',
-      fontSize: '14px',
-      padding: '8px 12px',
-      borderRadius: '6px',
-      whiteSpace: 'nowrap' as const,
-      pointerEvents: 'none' as const,
-      boxShadow: '0 4px 6px rgba(0,0,0,0.3)'
-    },
-    statusContainer: {
-      display: 'flex',
-      alignItems: 'center',
-      padding: '16px',
-      borderRadius: '12px',
-      backgroundColor: getStatusColor(status) + '20',
-      marginBottom: '24px',
-      border: `2px solid ${getStatusColor(status)}30`
-    },
-    statusDot: {
-      width: '16px',
-      height: '16px',
-      borderRadius: '50%',
-      backgroundColor: getStatusColor(status),
-      marginRight: '12px',
-      animation: 'pulse 2s infinite'
-    },
-    statusText: {
-      fontSize: '18px',
-      fontWeight: '600',
-      color: getStatusColor(status)
-    },
-    buttonContainer: {
-      display: 'flex',
-      gap: '16px'
-    },
-    button: {
-      flex: 1,
-      padding: '16px',
-      borderRadius: '12px',
-      border: 'none',
-      fontSize: '16px',
-      fontWeight: '600',
-      cursor: 'pointer',
-      display: 'flex',
-      alignItems: 'center',
-      justifyContent: 'center',
-      gap: '8px',
-      transition: 'all 0.2s ease'
-    },
-    primaryButton: {
-      backgroundColor: '#2563EB',
-      color: 'white',
-      boxShadow: '0 4px 6px rgba(37, 99, 235, 0.25)'
-    },
-    secondaryButton: {
-      backgroundColor: '#F3F4F6',
-      color: '#374151',
-      boxShadow: '0 2px 4px rgba(0,0,0,0.1)'
-    },
-    receiptContainer: {
-      display: 'flex',
-      flexDirection: 'column' as const,
-      alignItems: 'center',
-      justifyContent: 'center',
-      height: '100vh',
-      padding: '16px',
-      backgroundColor: 'white',
-      textAlign: 'center' as const
-    },
-    receiptIcon: {
-      width: '64px',
-      height: '64px',
-      backgroundColor: '#10B981',
-      borderRadius: '50%',
-      display: 'flex',
-      alignItems: 'center',
-      justifyContent: 'center',
-      marginBottom: '16px',
-      color: 'white'
-    },
-    receiptTitle: {
-      fontSize: '24px',
-      fontWeight: 'bold',
-      color: '#111827',
-      marginBottom: '8px',
-      margin: '0 0 8px 0'
-    },
-    receiptText: {
-      color: '#6B7280',
-      marginBottom: '24px',
-      margin: '0 0 24px 0'
-    },
-    receiptButton: {
-      backgroundColor: '#2563EB',
-      color: 'white',
-      padding: '12px 24px',
-      borderRadius: '8px',
-      border: 'none',
-      fontSize: '16px',
-      cursor: 'pointer'
-    }
-  };
-
-  // 添加CSS动画
-  useEffect(() => {
+  // Add CSS animations
+  React.useEffect(() => {
     const styleId = 'track-screen-animations';
     if (!document.getElementById(styleId)) {
       const style = document.createElement('style');
@@ -295,40 +106,33 @@ const TrackScreen: React.FC<TrackScreenProps> = ({ jobId = "12345" }) => {
     }
   }, []);
 
-  if (showReceipt) {
-    return (
-      <div style={styles.receiptContainer}>
-        <div style={styles.receiptIcon}>
-          ✓
-        </div>
-        <h2 style={styles.receiptTitle}>Job Completed!</h2>
-        <p style={styles.receiptText}>Your service has been successfully completed.</p>
-        <p style={{...styles.receiptText, fontSize: '14px'}}>Job ID: {jobId}</p>
-        <button
-          style={{
-            ...styles.receiptButton,
-            transition: 'opacity 0.2s ease'
-          }}
-          onMouseDown={(e) => e.currentTarget.style.opacity = '0.8'}
-          onMouseUp={(e) => e.currentTarget.style.opacity = '1'}
-          onMouseLeave={(e) => e.currentTarget.style.opacity = '1'}
-          onClick={handleComplete}
-        >
-          Complete
-        </button>
-      </div>
-    );
-  }
+  const getStatusColor = (currentStatus: Status): string => {
+    switch(currentStatus) {
+      case "enroute": return "#F59E0B";
+      case "onsite": return "#10B981";
+      case "completed": return "#6366F1";
+      default: return "#6B7280";
+    }
+  };
 
-  const pro = {
+  const getStatusText = (currentStatus: Status): string => {
+    switch(currentStatus) {
+      case "enroute": return "On the way";
+      case "onsite": return "Arrived on site";
+      case "completed": return "Job completed";
+      default: return "Unknown";
+    }
+  };
+
+  // Use real provider data from API + generate random data for missing fields
+  const pro = provider ? generateRandomProviderData(provider) : {
     name: "Van Songyot",
     trade: "Locksmith",
     rating: 4.9,
     jobs: 124,
+    distanceKm: 2.1,
     etaMin: Math.max(eta, 1),
     vehicle: "Toyota HiAce",
-    // remote placeholder image so there's no bundler path issues
-    // replace with: photo: require("../../assets/pros/alex.png") once you add a file
     photo: require("../../assets/pros/driver1.jpg"),
   };
 
@@ -354,79 +158,53 @@ const TrackScreen: React.FC<TrackScreenProps> = ({ jobId = "12345" }) => {
   }, [showProfile, veilOpacity, sheetOpacity, sheetScale]);
 
   return (
-    <div style={styles.container}>
-      <h1 style={styles.title}>Your FIXR is on the way</h1>
-      <p style={styles.eta}>ETA: {eta} min(s)</p>
-      
-      <div style={styles.mapContainer}>
-        <div style={styles.mapBackground}>
-          <div style={styles.gridOverlay}></div>
+    <View style={trackScreenStyles.screen}>
+      <Text style={trackScreenStyles.title}>Your pro is on the way</Text>
+      <Text>ETA: ~{eta} min</Text>
+
+      {/* Interactive Map */}
+      <View style={trackScreenStyles.mapContainer}>
+        <View style={trackScreenStyles.mapBackground}>
+          <View style={trackScreenStyles.gridOverlay}></View>
           
-          {/* 添加道路系统 */}
+          {/* Road System */}
           <svg style={{position: 'absolute', top: 0, left: 0, width: '100%', height: '100%', zIndex: 1}}>
-            {/* 主要道路 */}
+            {/* Main roads */}
             <line x1="0%" y1="30%" x2="100%" y2="30%" stroke="#D1D5DB" strokeWidth="8" />
             <line x1="0%" y1="70%" x2="100%" y2="70%" stroke="#D1D5DB" strokeWidth="8" />
             <line x1="30%" y1="0%" x2="30%" y2="100%" stroke="#D1D5DB" strokeWidth="8" />
             <line x1="70%" y1="0%" x2="70%" y2="100%" stroke="#D1D5DB" strokeWidth="6" />
             
-            {/* 次要道路 */}
+            {/* Secondary roads */}
             <line x1="0%" y1="50%" x2="100%" y2="50%" stroke="#E5E7EB" strokeWidth="4" />
             <line x1="50%" y1="0%" x2="50%" y2="100%" stroke="#E5E7EB" strokeWidth="4" />
             
-            {/* 道路标线 */}
+            {/* Road markings */}
             <line x1="0%" y1="30%" x2="100%" y2="30%" stroke="white" strokeWidth="1" strokeDasharray="20,10" />
             <line x1="0%" y1="70%" x2="100%" y2="70%" stroke="white" strokeWidth="1" strokeDasharray="20,10" />
           </svg>
           
-          {/* 建筑物 */}
-          <div style={{
-            position: 'absolute',
-            top: '10%',
-            left: '10%',
-            width: '15%',
-            height: '15%',
-            backgroundColor: '#9CA3AF',
-            borderRadius: '4px',
-            boxShadow: '2px 2px 4px rgba(0,0,0,0.2)',
-            zIndex: 2
-          }}></div>
-          <div style={{
-            position: 'absolute',
-            top: '75%',
-            left: '75%',
-            width: '20%',
-            height: '12%',
-            backgroundColor: '#6B7280',
-            borderRadius: '4px',
-            boxShadow: '2px 2px 4px rgba(0,0,0,0.2)',
-            zIndex: 2
-          }}></div>
-          <div style={{
-            position: 'absolute',
-            top: '15%',
-            right: '15%',
-            width: '18%',
-            height: '20%',
-            backgroundColor: '#4B5563',
-            borderRadius: '4px',
-            boxShadow: '2px 2px 4px rgba(0,0,0,0.2)',
-            zIndex: 2
-          }}></div>
+          {/* Buildings */}
+          <View style={trackScreenStyles.building1}></View>
+          <View style={trackScreenStyles.building2}></View>
+          <View style={trackScreenStyles.building3}></View>
           
-          {/* 用户位置标记 */}
-          <div style={{...styles.userMarker, zIndex: 10}}>
-            <div style={{...styles.markerDot, ...styles.userDot}}></div>
-            <div style={styles.tooltip}>Your Location</div>
-          </div>
+          {/* User location marker */}
+          <View style={trackScreenStyles.userMarker}>
+            <View style={[trackScreenStyles.markerDot, trackScreenStyles.userDot]}></View>
+            <View style={trackScreenStyles.tooltip}>Your Location</View>
+          </View>
           
-          {/* 专业人员位置标记 */}
-          <div style={{...styles.proMarker, zIndex: 10}}>
-            <div style={{...styles.markerDot, ...styles.proDot}}></div>
-            <div style={styles.tooltip}>Professional ({getStatusText(status)})</div>
-          </div>
+          {/* Provider location marker */}
+          <View style={[trackScreenStyles.proMarker, {
+            left: `${45 + (proLocation.longitude - (-122.4324)) * 5000}%`,
+            top: `${60 + (userLocation.latitude - proLocation.latitude) * 5000}%`,
+          }]}>
+            <View style={[trackScreenStyles.markerDot, trackScreenStyles.proDot, { backgroundColor: getStatusColor(status) }]}></View>
+            <View style={trackScreenStyles.tooltip}>Professional ({getStatusText(status)})</View>
+          </View>
           
-          {/* 路径线 */}
+          {/* Route line */}
           <svg style={{position: 'absolute', top: 0, left: 0, width: '100%', height: '100%', zIndex: 5, pointerEvents: 'none'}}>
             <line 
               x1="45%" 
@@ -440,95 +218,101 @@ const TrackScreen: React.FC<TrackScreenProps> = ({ jobId = "12345" }) => {
             />
           </svg>
           
-          {/* 距离信息面板 */}
-          <div style={{
-            position: 'absolute',
-            top: '20px',
-            left: '20px',
-            right: '20px',
-            backgroundColor: 'rgba(255,255,255,0.95)',
-            borderRadius: '12px',
-            padding: '16px',
-            boxShadow: '0 4px 12px rgba(0,0,0,0.15)',
-            fontSize: '16px',
-            zIndex: 15,
-            backdropFilter: 'blur(10px)'
-          }}>
-            <div style={{display: 'flex', justifyContent: 'space-between', marginBottom: '8px'}}>
-              <span style={{color: '#6B7280', fontWeight: '500'}}>Distance:</span>
-              <span style={{fontWeight: '700', color: '#111827'}}>{(Math.random() * 2 + 0.5).toFixed(1)} km</span>
-            </div>
-            <div style={{display: 'flex', justifyContent: 'space-between', marginBottom: '8px'}}>
-              <span style={{color: '#6B7280', fontWeight: '500'}}>Speed:</span>
-              <span style={{fontWeight: '700', color: '#111827'}}>{(Math.random() * 20 + 30).toFixed(0)} km/h</span>
-            </div>
-            <div style={{display: 'flex', justifyContent: 'space-between'}}>
-              <span style={{color: '#6B7280', fontWeight: '500'}}>Route:</span>
-              <span style={{fontWeight: '700', color: getStatusColor(status)}}>{getStatusText(status)}</span>
-            </div>
-          </div>
+          {/* Distance info panel */}
+          <View style={trackScreenStyles.infoPanel}>
+            <View style={trackScreenStyles.infoRow}>
+              <Text style={trackScreenStyles.infoLabel}>Distance:</Text>
+              <Text style={trackScreenStyles.infoValue}>{(Math.random() * 2 + 0.5).toFixed(1)} km</Text>
+            </View>
+            <View style={trackScreenStyles.infoRow}>
+              <Text style={trackScreenStyles.infoLabel}>Speed:</Text>
+              <Text style={trackScreenStyles.infoValue}>{(Math.random() * 20 + 30).toFixed(0)} km/h</Text>
+            </View>
+            <View style={trackScreenStyles.infoRow}>
+              <Text style={trackScreenStyles.infoLabel}>Route:</Text>
+              <Text style={[trackScreenStyles.infoValue, { color: getStatusColor(status) }]}>{getStatusText(status)}</Text>
+            </View>
+          </View>
           
-          {/* 地图控制按钮 */}
-          <div style={{
-            position: 'absolute',
-            bottom: '20px',
-            right: '20px',
-            display: 'flex',
-            flexDirection: 'column',
-            gap: '8px',
-            zIndex: 15
-          }}>
-            <button style={{
-              width: '44px',
-              height: '44px',
-              backgroundColor: 'white',
-              border: 'none',
-              borderRadius: '8px',
-              boxShadow: '0 2px 8px rgba(0,0,0,0.15)',
-              cursor: 'pointer',
-              display: 'flex',
-              alignItems: 'center',
-              justifyContent: 'center',
-              fontSize: '20px',
-              fontWeight: 'bold',
-              color: '#374151'
-            }}>+</button>
-            <button style={{
-              width: '44px',
-              height: '44px',
-              backgroundColor: 'white',
-              border: 'none',
-              borderRadius: '8px',
-              boxShadow: '0 2px 8px rgba(0,0,0,0.15)',
-              cursor: 'pointer',
-              display: 'flex',
-              alignItems: 'center',
-              justifyContent: 'center',
-              fontSize: '20px',
-              fontWeight: 'bold',
-              color: '#374151'
-            }}>-</button>
-          </div>
-        </div>
-      </div>
+          {/* Map controls */}
+          <View style={trackScreenStyles.mapControls}>
+            <Pressable style={trackScreenStyles.mapButton}>
+              <Text style={trackScreenStyles.mapButtonText}>+</Text>
+            </Pressable>
+            <Pressable style={trackScreenStyles.mapButton}>
+              <Text style={trackScreenStyles.mapButtonText}>-</Text>
+            </Pressable>
+          </View>
+        </View>
+      </View>
       
-      <div style={styles.statusContainer}>
-        <div style={styles.statusDot}></div>
-        <span style={styles.statusText}>
+      {/* Status container */}
+      <View style={[trackScreenStyles.statusContainer, { backgroundColor: getStatusColor(status) + '20', borderColor: getStatusColor(status) + '30' }]}>
+        <View style={[trackScreenStyles.statusDot, { backgroundColor: getStatusColor(status) }]}></View>
+        <Text style={[trackScreenStyles.statusText, { color: getStatusColor(status) }]}>
           Status: {getStatusText(status)}
-        </span>
-      </div>
+        </Text>
+      </View>
       
-      <div style={styles.buttonContainer}>
-        <button style={{...styles.button, ...styles.primaryButton}}>
-          📞 Call Pro
-        </button>
-        <button style={{...styles.button, ...styles.secondaryButton}}>
-          💬 Message
-        </button>
-      </div>
-    </div>
-  );
-};
+      {/* Action buttons */}
+      <View style={trackScreenStyles.buttonContainer}>
+        <Pressable style={[trackScreenStyles.button, trackScreenStyles.primaryButton]}>
+          <Text style={trackScreenStyles.primaryButtonText}>📞 Call Pro</Text>
+        </Pressable>
+        <Pressable style={[trackScreenStyles.button, trackScreenStyles.secondaryButton]}>
+          <Text style={trackScreenStyles.secondaryButtonText}>💬 Message</Text>
+        </Pressable>
+      </View>
 
-export default TrackScreen;
+      <Text style={{ marginTop: 8, color: "#666" }}>
+        Status: {status} • Job #{jobId}
+      </Text>
+      {location ? <Text style={{ color: "#666" }}>Location: {location}</Text> : null}
+      {details ? <Text style={{ color: "#666" }}>Details: {details}</Text> : null}
+      {provider ? <Text style={{ color: "#666" }}>Provider ID: {provider.provider_id}</Text> : null}
+
+      {/* --- Profile popup overlay --- */}
+      {showProfile && (
+        <View style={StyleSheet.absoluteFill}>
+          <Animated.View style={[trackScreenStyles.veil, { opacity: veilOpacity }]} />
+          <View style={trackScreenStyles.centerWrap} pointerEvents="box-none">
+            <Animated.View
+              style={[
+                trackScreenStyles.sheet,
+                { opacity: sheetOpacity, transform: [{ scale: sheetScale }] },
+              ]}
+            >
+              <View style={trackScreenStyles.photoWrap}>
+                <Image source={pro.photo as any} style={trackScreenStyles.photo} />
+              </View>
+
+              <Text style={trackScreenStyles.proName}>{pro.name}</Text>
+              <Text style={trackScreenStyles.proSub}>{pro.trade}</Text>
+
+              <View style={trackScreenStyles.row}>
+                <Text style={trackScreenStyles.badge}>★ {pro.rating}</Text>
+                <Text style={trackScreenStyles.sep}>•</Text>
+                <Text style={trackScreenStyles.badge}>{pro.jobs} jobs</Text>
+                <Text style={trackScreenStyles.sep}>•</Text>
+                <Text style={trackScreenStyles.badge}>{pro.distanceKm} km away</Text>
+              </View>
+
+              <View style={[trackScreenStyles.row, { marginTop: 8 }]}>
+                <Text style={{ color: "#374151" }}>Vehicle: {pro.vehicle}</Text>
+              </View>
+
+              <View style={[trackScreenStyles.row, { marginTop: 16 }]}>
+                <Pressable style={[trackScreenStyles.btn, trackScreenStyles.btnPrimary]} onPress={() => setShowProfile(false)}>
+                  <Text style={trackScreenStyles.btnPrimaryText}>Start tracking</Text>
+                </Pressable>
+                <Pressable style={[trackScreenStyles.btn, trackScreenStyles.btnGhost]} onPress={() => setShowProfile(false)}>
+                  <Text style={trackScreenStyles.btnGhostText}>Close</Text>
+                </Pressable>
+              </View>
+            </Animated.View>
+          </View>
+        </View>
+      )}
+    </View>
+  );
+}
