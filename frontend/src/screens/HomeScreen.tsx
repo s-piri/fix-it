@@ -169,7 +169,7 @@ export default function HomeScreen() {
     >
       <View style={styles.form}>
         <TextInput
-          placeholder="Enter location"
+          placeholder="Address"
           value={location}
           onChangeText={setLocation}
           style={styles.input}
@@ -178,7 +178,7 @@ export default function HomeScreen() {
           placeholder="Details"
           value={details}
           onChangeText={setDetails}
-          style={[styles.input, { height: 56 }]}
+          style={[styles.input, { marginTop: 20 }]}
         />
 
         <Animated.View style={{ transform: [{ scale: ctaScale }] }}>
