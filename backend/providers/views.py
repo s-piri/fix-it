@@ -33,7 +33,11 @@ class ProviderSearchView(APIView):
         max_hourly_rate = budget / 2  # Assuming 2 hours (place holder; maybe add logic later?)
         providers = providers.filter(hourly_rate__lte=max_hourly_rate)
         
-        providers = providers.order_by('-rating')[:1]
+        #providers = providers.order_by('-rating')[:1] 
+        
+        providers_list = list(providers)
+        print(providers_list)
+        random_provider = random.choice(providers_list)
         
         if not providers.exists():
             return Response({
@@ -42,8 +46,9 @@ class ProviderSearchView(APIView):
         
         #Select the provider with highest rating
         #Serialize to prevent sensitive data exposure (like hourly_rate)
-        serializer = ProviderSerializer(providers.first())
-        
+        #serializer = ProviderSerializer(providers.first())
+        serializer = ProviderSerializer(random_provider) # randomize to simulate matching cuz we don't have proper logic yet
+
         return Response({
             'customer_id': customer_id,
             'job_type': job_type,
