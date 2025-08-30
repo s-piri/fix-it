@@ -19,7 +19,7 @@ Fix-it is an on-demand home services platform that connects households with veri
 * **Instant matching:** When a user requests a service, the system finds nearby available pros and confirms a booking immediately.
 * **Real-time ETA & location tracking:** After a pro accepts, users see the pro’s live location and estimated time of arrival.
 * **Transparent pricing:** Price estimates are shown before booking; supports flat fees and time or distance-based pricing.
-* **Multiple service categories:** Supports handyman, plumber, electrician, locksmith, technician, cleaner, and similar trades.
+* **Multiple service categories:** Supports handyman, plumber, electrician, locksmith, mechanic, cleaner, and similar trades.
 * **Two-way rating system:** After each job both user and pro rate each other on a five-star scale to maintain quality and platform health.
 * **Pro verification & profiles:** Pros can upload licenses and certifications; platform supports background and credential checks placeholder integration.
 * **Instant communication & notifications:** Order updates, in-app chat or call for coordination.
