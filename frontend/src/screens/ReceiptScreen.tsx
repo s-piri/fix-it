@@ -58,9 +58,11 @@ export default function ReceiptScreen() {
         <Text style={styles.proName}>{proInfo.name}</Text>
         <Text style={styles.proSub}>{proInfo.trade}</Text>
         <View style={styles.proRow}>
-          <Text style={styles.badge}>★ {proInfo.rating.toFixed(1)}</Text>
-          <Text style={styles.sep}>•</Text>
-          <Text style={styles.badge}>{proInfo.jobs} jobs</Text>
+          <View style={styles.row}>
+            <Text style={styles.badge}>★ {Number(proInfo.rating).toFixed(1)}</Text>
+            <Text style={styles.sep}>•</Text>
+            <Text style={styles.badge}>{proInfo.jobs} jobs</Text>
+          </View>
         </View>
       </View>
 
@@ -154,6 +156,7 @@ const styles = StyleSheet.create({
     color: "#111827",
   },
   sep: { color: "#9CA3AF", marginHorizontal: 2 },
+  row: { flexDirection: "row", alignItems: "center" },
 
   ratingSection: { marginTop: 8 },
   ratingTitle: { fontSize: 18, fontWeight: "600", marginBottom: 16, textAlign: "center", color: BRAND },
