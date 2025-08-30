@@ -1,8 +1,7 @@
 import React from "react";
-import { View, Text, Pressable, TextInput, Image, StyleSheet, ScrollView } from "react-native";
+import { View, Text, Pressable, TextInput, Image, StyleSheet } from "react-native";
 import { useRoute } from "@react-navigation/native";
 
-// Helper function to map backend profile picture paths to local assets
 const getProfilePicture = (profilePicturePath?: string) => {
   if (!profilePicturePath) {
     return require("../../assets/pros/driver1.jpg");
@@ -67,7 +66,7 @@ export default function ReceiptScreen() {
   };
 
   return (
-    <ScrollView style={styles.container} contentContainerStyle={{ flexGrow: 1 }}>
+    <View style={styles.container}>
       <Text style={styles.title}>Receipt</Text>
       <Text style={styles.jobText}>Thanks for booking. # {jobId || "12345"}</Text>
 
@@ -129,10 +128,10 @@ export default function ReceiptScreen() {
           <Text style={styles.thankYouText}>Thanks!</Text>
           <Text style={styles.finalRating}>You rated: {rating} ★</Text>
           {comment ? <Text style={styles.finalComment}>"{comment}"</Text> : null}
-                 </View>
-       )}
-     </ScrollView>
-   );
+        </View>
+      )}
+    </View>
+  );
 }
 
 const BRAND = "#0D3B66";
@@ -144,7 +143,6 @@ const styles = StyleSheet.create({
     flex: 1, 
     padding: 16, 
     paddingTop: 32, 
-    paddingBottom: 32,
     backgroundColor: "#FFFFFF",
     maxWidth: 600,
     alignSelf: "center",
@@ -196,8 +194,6 @@ const styles = StyleSheet.create({
   ratingSection: { 
     marginTop: 16,
     paddingHorizontal: 8,
-    width: "100%",
-    maxWidth: "100%",
   },
   ratingTitle: { fontSize: 18, fontWeight: "600", marginBottom: 16, textAlign: "center", color: BRAND },
   starsContainer: { flexDirection: "row", justifyContent: "center", alignItems: "center", paddingVertical: 20 },
@@ -216,18 +212,8 @@ const styles = StyleSheet.create({
     fontSize: 16,
     backgroundColor: MUTED,
     minHeight: 80,
-    maxWidth: "100%",
-    width: "100%",
   },
-  button: { 
-    marginTop: 12, 
-    backgroundColor: BRAND, 
-    padding: 12, 
-    borderRadius: 10, 
-    alignItems: "center",
-    maxWidth: "100%",
-    width: "100%",
-  },
+  button: { marginTop: 12, backgroundColor: BRAND, padding: 12, borderRadius: 10, alignItems: "center" },
   buttonText: { color: "#fff", fontWeight: "600", fontSize: 16 },
 
   thankYouSection: { 

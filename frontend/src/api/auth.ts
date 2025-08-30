@@ -1,4 +1,3 @@
-// src/api/auth.ts
 const BASE_URL = process.env.EXPO_PUBLIC_API_BASE_URL ?? "http://localhost:8000/api";
 
 export type LoginResponse = {
@@ -20,7 +19,6 @@ export async function login(username: string, password: string): Promise<LoginRe
   const res = await fetch(`${BASE_URL}/users/login/`, {
     method: "POST",
     headers: { "Content-Type": "application/json" },
-    // if you run on web, this lets the browser store a session cookie
     credentials: "include",
     body: JSON.stringify({ username, password }),
   });

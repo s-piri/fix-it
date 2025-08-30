@@ -55,15 +55,15 @@ const processProviderData = (provider: Provider) => {
   let etaMinutes = 10; // Default fallback
   
   if (etaString.includes('minutes')) {
-    etaMinutes = Math.min(parseInt(etaString.split(' ')[0]) || 10, 20); // Cap at 20 minutes
+    etaMinutes = Math.min(parseInt(etaString.split(' ')[0]) || 10, 20);
   } else if (etaString.includes('hour')) {
-    etaMinutes = Math.min(parseInt(etaString.split(' ')[0]) * 60 || 60, 20); // Cap at 20 minutes
+    etaMinutes = Math.min(parseInt(etaString.split(' ')[0]) * 60 || 60, 20);
   } else if (etaString.includes('hours')) {
-    etaMinutes = Math.min(parseInt(etaString.split(' ')[0]) * 60 || 60, 20); // Cap at 20 minutes
+    etaMinutes = Math.min(parseInt(etaString.split(' ')[0]) * 60 || 60, 20);
   }
   
   // Safely capitalize job type with fallback
-  const jobType = provider.job_type || "cleaner"; // Changed default from handyman to cleaner
+  const jobType = provider.job_type || "cleaner";
   const capitalizedJobType = jobType.charAt(0).toUpperCase() + jobType.slice(1);
   
   return {
@@ -71,7 +71,7 @@ const processProviderData = (provider: Provider) => {
     trade: capitalizedJobType,
     rating: provider.rating || 4.5,
     jobs: provider.jobs || 100,
-    distanceKm: (Math.random() * 5 + 0.5).toFixed(1), // Random distance since not in backend
+    distanceKm: (Math.random() * 5 + 0.5).toFixed(1),
     etaMin: etaMinutes,
     vehicle: provider.vehicle || "Toyota HiAce",
     photo: getProfilePicture(provider.profile_picture),
@@ -217,8 +217,8 @@ export default function TrackScreen() {
     photo: getProfilePicture(),
   };
 
-  // --- Popup animation state ---
-  const [showProfile, setShowProfile] = React.useState(true); // show immediately on match
+  //Popup animation state
+  const [showProfile, setShowProfile] = React.useState(true);
   const veilOpacity = React.useRef(new Animated.Value(0)).current;
   const sheetOpacity = React.useRef(new Animated.Value(0)).current;
   const sheetScale = React.useRef(new Animated.Value(0.92)).current;
