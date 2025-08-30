@@ -72,9 +72,9 @@ Fix-it is an on-demand home services platform that connects households with veri
 - npm or yarn
 - Windows 10/11
 
-## Quick Start
+## Quick Demo
 
-### Backend (Django)
+### Start Backend (Django)
 
 1. **Install dependencies:**
    ```cmd
@@ -91,14 +91,7 @@ Fix-it is an on-demand home services platform that connects households with veri
    python manage.py runserver
    ```
 
-4. **Test API endpoints in your browser:**
-   ```
-   http://127.0.0.1:8000/api/providers/search/?customer_id=123&job_type=mechanic&budget=200
-   http://127.0.0.1:8000/api/providers/search/?customer_id=456&job_type=locksmith&budget=150
-   http://127.0.0.1:8000/api/providers/search/?customer_id=789&job_type=carpenter&budget=180
-   ```
-
-### Frontend (React Native)
+### Start Frontend (React Native)
 
 1. **Navigate to the frontend directory:**
    ```cmd
@@ -118,11 +111,14 @@ Fix-it is an on-demand home services platform that connects households with veri
    ```cmd
    npm start
    ```
+### Access
 
-## Contact
+```127.0.0.1:8081```
 
-For questions or collaboration, contact the project maintainers (email or team contacts should be listed in the repo).
+## Contributions
 
- - abc12345@uni.sydney.edu.au
-
-Thanks for using Fix-it — connecting the right people, at the right time, with the right tools makes city life smoother and creates fair, sustainable opportunities for independent pros.
+1. Songyot - Backend & Project Management ~25%
+2. Paranat - Frontend & Media Creation ~25%
+3. Ziyang - UI/UX & Frontend ~20%
+4. Poonyawat - UI/UX & Frontend ~20%
+5. Pragon Pariyavatkal - Ideation & DB design ~ 10%
