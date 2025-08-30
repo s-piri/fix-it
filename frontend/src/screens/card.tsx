@@ -17,7 +17,7 @@ export default function ServiceCard({ icon, label, onPress, selected }: Props) {
 
   useEffect(() => {
     Animated.spring(scale, {
-      toValue: hovered || pressed ? 1.05 : 1,  // expand to 105% on hover/press
+      toValue: hovered || pressed ? 1.05 : 1,  
       friction: 5,
       tension: 150,
       useNativeDriver: true,
