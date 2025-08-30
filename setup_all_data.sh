@@ -9,6 +9,13 @@ if [ ! -f "venv/bin/activate" ]; then
     exit 1
 fi
 
+# Check if backend directory exists
+if [ ! -f "backend/manage.py" ]; then
+    echo "Error: Django project not found in backend directory!"
+    echo "Please ensure the backend directory contains the Django project."
+    exit 1
+fi
+
 echo "Activating virtual environment..."
 source venv/bin/activate
 
@@ -17,6 +24,9 @@ cd backend
 python manage.py makemigrations providers
 python manage.py makemigrations users
 python manage.py migrate
+
+echo "Clearing existing data..."
+python manage.py flush --noinput
 
 echo "Populating database with provider data..."
 python manage.py populate_providers

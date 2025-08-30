@@ -9,6 +9,14 @@ if not exist "venv\Scripts\activate.bat" (
     exit /b 1
 )
 
+REM Check if backend directory exists
+if not exist "backend\manage.py" (
+    echo Error: Django project not found in backend directory!
+    echo Please ensure the backend directory contains the Django project.
+    pause
+    exit /b 1
+)
+
 echo Activating virtual environment...
 call venv\Scripts\activate.bat
 
@@ -17,6 +25,9 @@ cd backend
 python manage.py makemigrations providers
 python manage.py makemigrations users
 python manage.py migrate
+
+echo Clearing existing data...
+python manage.py flush --noinput
 
 echo Populating database with provider data...
 python manage.py populate_providers
