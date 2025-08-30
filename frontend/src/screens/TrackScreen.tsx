@@ -22,27 +22,46 @@ interface Location {
   longitude: number;
 }
 
-// Helper function to generate random data for fields not in database
-const generateRandomProviderData = (provider: Provider) => {
-  const firstNames = ["Alex", "Sarah", "Mike", "Emma", "David", "Lisa", "John", "Maria", "Tom", "Anna"];
-  const lastNames = ["Smith", "Johnson", "Williams", "Brown", "Jones", "Garcia", "Miller", "Davis", "Rodriguez", "Martinez"];
-  const vehicles = ["Toyota HiAce", "Ford Transit", "Mercedes Sprinter", "Nissan NV200", "Chevrolet Express"];
-  const trades = ["Plumber", "Electrician", "Handyman", "Mechanic", "Locksmith", "Carpenter"];
+// Helper function to process backend provider data for frontend display
+const processProviderData = (provider: Provider) => {
+  // Extract first name from provider_name
+  const nameParts = (provider.provider_name || "Professional Provider").split(' ');
+  const firstName = nameParts[0] || "Professional";
+  const lastName = nameParts[1] || "Provider";
   
-  // Extract first name from provider_name or generate random
-  const nameParts = provider.provider_name.split(' ');
-  const firstName = nameParts[0] || firstNames[Math.floor(Math.random() * firstNames.length)];
-  const lastName = nameParts[1] || lastNames[Math.floor(Math.random() * lastNames.length)];
+  // Convert ETA string to minutes for display and cap at 20 for demo
+  const etaString = provider.eta || "10 minutes";
+  let etaMinutes = 10; // Default fallback
+  
+  if (etaString.includes('minutes')) {
+    etaMinutes = Math.min(parseInt(etaString.split(' ')[0]) || 10, 20); // Cap at 20 minutes
+  } else if (etaString.includes('hour')) {
+    etaMinutes = Math.min(parseInt(etaString.split(' ')[0]) * 60 || 60, 20); // Cap at 20 minutes
+  } else if (etaString.includes('hours')) {
+    etaMinutes = Math.min(parseInt(etaString.split(' ')[0]) * 60 || 60, 20); // Cap at 20 minutes
+  }
+  
+  // Safely capitalize job type with fallback
+  const jobType = provider.job_type || "handyman";
+  const capitalizedJobType = jobType.charAt(0).toUpperCase() + jobType.slice(1);
   
   return {
     name: `${firstName} ${lastName}`,
-    trade: trades[Math.floor(Math.random() * trades.length)],
-    rating: (4.0 + Math.random() * 1.0).toFixed(1), // 4.0 to 5.0
-    jobs: Math.floor(Math.random() * 200) + 50, // 50 to 250 jobs
-    distanceKm: (Math.random() * 5 + 0.5).toFixed(1), // 0.5 to 5.5 km
-    etaMin: Math.max(provider.eta, 1),
-    vehicle: vehicles[Math.floor(Math.random() * vehicles.length)],
-    photo: require("../../assets/pros/driver1.jpg"), // fallback photo
+    trade: capitalizedJobType,
+    rating: provider.rating || 4.5,
+    jobs: provider.jobs || 100,
+    distanceKm: (Math.random() * 5 + 0.5).toFixed(1), // Random distance since not in backend
+    etaMin: etaMinutes,
+    vehicle: provider.vehicle || "Toyota HiAce",
+    photo: provider.profile_picture ? { uri: provider.profile_picture } : require("../../assets/pros/driver1.jpg"),
+    // Include all backend data for ReceiptScreen
+    provider_id: provider.provider_id || "FALLBACK_001",
+    provider_name: provider.provider_name || "Professional Provider",
+    job_type: jobType,
+    eta: etaString,
+    hourly_rate: provider.hourly_rate || 75.00,
+    is_available: provider.is_available !== undefined ? provider.is_available : true,
+    profile_picture: provider.profile_picture,
   };
 };
 
@@ -152,8 +171,8 @@ export default function TrackScreen() {
     }
   };
 
-  // Use real provider data from API + generate random data for missing fields
-  const pro = provider ? generateRandomProviderData(provider) : {
+  // Process provider data from backend API
+  const pro = provider ? processProviderData(provider) : {
     name: "Van Songyot",
     trade: "Locksmith",
     rating: 4.9,
