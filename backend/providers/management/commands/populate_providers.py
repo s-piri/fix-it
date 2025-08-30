@@ -19,7 +19,8 @@ class Command(BaseCommand):
                 'rating': 4.8,
                 'jobs': 124,
                 'vehicle': 'Toyota HiAce',
-                'is_available': True
+                'is_available': True,
+                'profile_picture': './frontend/assets/pros/1.png'
             },
             {
                 'provider_id': 'PROV002',
@@ -30,7 +31,8 @@ class Command(BaseCommand):
                 'rating': 4.9,
                 'jobs': 89,
                 'vehicle': 'Ford Transit',
-                'is_available': True
+                'is_available': True,
+                'profile_picture': './frontend/assets/pros/2.png'
             },
             {
                 'provider_id': 'PROV003',
@@ -41,7 +43,8 @@ class Command(BaseCommand):
                 'rating': 4.6,
                 'jobs': 156,
                 'vehicle': 'Mercedes Sprinter',
-                'is_available': True
+                'is_available': True,
+                'profile_picture': './frontend/assets/pros/3.png'
             },
             {
                 'provider_id': 'PROV004',
@@ -52,7 +55,8 @@ class Command(BaseCommand):
                 'rating': 4.8,
                 'jobs': 67,
                 'vehicle': 'Nissan NV200',
-                'is_available': True
+                'is_available': True,
+                'profile_picture': './frontend/assets/pros/4.png'
             },
             {
                 'provider_id': 'PROV005',
@@ -63,7 +67,8 @@ class Command(BaseCommand):
                 'rating': 4.7,
                 'jobs': 203,
                 'vehicle': 'Chevrolet Express',
-                'is_available': True
+                'is_available': True,
+                'profile_picture': './frontend/assets/pros/1.png'
             },
             {
                 'provider_id': 'PROV006',
@@ -74,7 +79,8 @@ class Command(BaseCommand):
                 'rating': 4.9,
                 'jobs': 178,
                 'vehicle': 'Toyota HiAce',
-                'is_available': True
+                'is_available': True,
+                'profile_picture': './frontend/assets/pros/2.png'
             },
             {
                 'provider_id': 'PROV007',
@@ -85,7 +91,8 @@ class Command(BaseCommand):
                 'rating': 4.5,
                 'jobs': 92,
                 'vehicle': 'Ford Transit',
-                'is_available': True
+                'is_available': True,
+                'profile_picture': './frontend/assets/pros/3.png'
             },
             {
                 'provider_id': 'PROV008',
@@ -96,7 +103,8 @@ class Command(BaseCommand):
                 'rating': 4.7,
                 'jobs': 145,
                 'vehicle': 'Mercedes Sprinter',
-                'is_available': True
+                'is_available': True,
+                'profile_picture': './frontend/assets/pros/4.png'
             },
             {
                 'provider_id': 'PROV009',
@@ -107,7 +115,8 @@ class Command(BaseCommand):
                 'rating': 4.4,
                 'jobs': 234,
                 'vehicle': 'Nissan NV200',
-                'is_available': True
+                'is_available': True,
+                'profile_picture': './frontend/assets/pros/1.png'
             },
             {
                 'provider_id': 'PROV010',
@@ -118,7 +127,8 @@ class Command(BaseCommand):
                 'rating': 4.8,
                 'jobs': 167,
                 'vehicle': 'Chevrolet Express',
-                'is_available': True
+                'is_available': True,
+                'profile_picture': './frontend/assets/pros/2.png'
             },
             {
                 'provider_id': 'PROV011',
@@ -129,7 +139,8 @@ class Command(BaseCommand):
                 'rating': 4.7,
                 'jobs': 98,
                 'vehicle': 'Toyota HiAce',
-                'is_available': True
+                'is_available': True,
+                'profile_picture': './frontend/assets/pros/3.png'
             },
             {
                 'provider_id': 'PROV012',
@@ -140,7 +151,8 @@ class Command(BaseCommand):
                 'rating': 4.9,
                 'jobs': 76,
                 'vehicle': 'Ford Transit',
-                'is_available': True
+                'is_available': True,
+                'profile_picture': './frontend/assets/pros/4.png'
             },
             {
                 'provider_id': 'PROV013',
@@ -151,7 +163,8 @@ class Command(BaseCommand):
                 'rating': 4.8,
                 'jobs': 112,
                 'vehicle': 'Mercedes Sprinter',
-                'is_available': True
+                'is_available': True,
+                'profile_picture': './frontend/assets/pros/1.png'
             }
         ]
 

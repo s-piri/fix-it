@@ -83,7 +83,7 @@ Fix-it is an on-demand home services platform that connects households with veri
 
 2. **Setup API and populate the database with mock data:**
    ```cmd
-   setup_api.bat
+   setup_all_data.bat
    ```
 
 3. **Run the Django server:**
