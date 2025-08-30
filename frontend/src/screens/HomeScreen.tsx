@@ -7,8 +7,9 @@ import {
   TextInput,
   Pressable,
   StyleSheet,
-} from "react-native";
+} from "react-native"; 
 import { useNavigation } from "@react-navigation/native";
+import ServiceCard from "./card";
 
 const SERVICES = [
   { id: 1, name: "Plumber",     image: require("../../assets/role3.png") },
@@ -31,7 +32,6 @@ export default function HomeScreen() {
         <View style={styles.navbar}>
           <Text style={styles.logo}>FIX IT</Text>
           <View style={styles.navLinks}>
-            <Text style={styles.navLink}>Fix Now</Text>
             <Text style={styles.navLink}>About</Text>
             <Text style={styles.navLink}>Help</Text>
             <Pressable style={styles.signInBtn} onPress={() => nav.navigate("Login")}>
@@ -46,14 +46,13 @@ export default function HomeScreen() {
 
         <View style={styles.grid}>
           {SERVICES.map((s) => (
-            <Pressable
-              key={s.id}
-              style={styles.card}
+            <View key={s.id} style={styles.cardWrap}>
+            <ServiceCard
+              label={s.name}
+              icon={s.image}
               onPress={() => nav.navigate("Book", { service: s.name })}
-            >
-              <Image source={s.image} style={styles.cardImage} />
-              <Text style={styles.cardTitle}>{s.name}</Text>
-            </Pressable>
+            />
+          </View>
           ))}
         </View>
 
