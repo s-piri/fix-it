@@ -1,7 +1,9 @@
 import React, { useState } from "react";
-import { View, Text, TextInput, Pressable, StyleSheet, ActivityIndicator, Alert } from "react-native";
+import { View, Text, TextInput, Pressable, StyleSheet, ActivityIndicator, Alert, Image } from "react-native";
 import { useNavigation, useRoute } from "@react-navigation/native";
 import { login } from "../api/auth";
+
+const LOGO = require("../../assets/logo.png");
 
 export default function LoginScreen() {
   const [username, setUsername] = useState("");
@@ -47,8 +49,7 @@ export default function LoginScreen() {
     <View style={styles.container}>
       <View style={styles.card}>
         <View style={styles.header}>
-          <Text style={styles.title}>Log In</Text>
-          <Text style={styles.logo}>FIX IT</Text>
+          <Image source={LOGO} style={styles.logoImage} />
         </View>
 
         <View style={styles.form}>
