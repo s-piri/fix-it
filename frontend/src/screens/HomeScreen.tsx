@@ -158,7 +158,18 @@ export default function HomeScreen() {
             onPressIn={onCtaIn}
             onPressOut={onCtaOut}
     
-            onPress={() => nav.navigate("Finding", { location, details })}
+            onPress={() => {
+              if (!selected) {
+                alert("Please select a service first");
+                return;
+              }
+              const selectedService = SERVICES.find(s => s.id === selected);
+              nav.navigate("Finding", { 
+                location, 
+                details, 
+                jobType: selectedService?.name.toLowerCase() || "plumbing" 
+              });
+            }}
             style={styles.cta}
           >
             <Text style={styles.ctaText}>Fix It!</Text>
