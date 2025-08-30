@@ -14,7 +14,7 @@ export default function FindingScreen() {
 
   return (
     <View style={{ flex: 1, alignItems: "center", justifyContent: "center" }}>
-      <Text style={{ fontSize: 18, fontWeight: "600" }}>Finding a nearby licensed fixr…</Text>
+      <Text style={{ fontSize: 18, fontWeight: "600" }}>Finding a nearby licensed FIXR…</Text>
       <Text style={{ color: "#6B7280", marginTop: 8 }}>Job: {jobId}</Text>
     </View>
   );
