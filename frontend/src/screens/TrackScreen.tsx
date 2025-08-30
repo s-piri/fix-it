@@ -27,17 +27,15 @@ export default function TrackScreen() {
     if (eta === 3) setStatus("onsite");
     if (eta === 0) {
       setStatus("completed");
-      nav.navigate("Receipt", { jobId });
+      nav.navigate("Receipt", { jobId, pro });
     }
   }, [eta, nav, jobId]);
 
-  // --- MOCK professional data (swap to your real data whenever) ---
   const pro = {
     name: "Van Songyot",
     trade: "Locksmith",
     rating: 4.9,
     jobs: 124,
-    distanceKm: 2.1,
     etaMin: Math.max(eta, 1),
     vehicle: "Toyota HiAce",
     // remote placeholder image so there's no bundler path issues
@@ -69,7 +67,7 @@ export default function TrackScreen() {
   return (
     <View style={styles.screen}>
       <Text style={styles.title}>Your pro is on the way</Text>
-      <Text>ETA: ~{eta} min</Text>
+      <Text>ETA: {eta} min(s)</Text>
 
       <View style={styles.map}>
         <Text>Live map placeholder</Text>
@@ -103,8 +101,6 @@ export default function TrackScreen() {
                 <Text style={styles.badge}>★ {pro.rating.toFixed(1)}</Text>
                 <Text style={styles.sep}>•</Text>
                 <Text style={styles.badge}>{pro.jobs} jobs</Text>
-                <Text style={styles.sep}>•</Text>
-                <Text style={styles.badge}>{pro.distanceKm.toFixed(1)} km away</Text>
               </View>
 
               <View style={[styles.row, { marginTop: 8 }]}>
