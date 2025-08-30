@@ -12,6 +12,8 @@ import { useNavigation } from "@react-navigation/native";
 import ServiceCard from "./card";
 
 
+
+
 const SERVICES = [
   { id: 1, name: "Plumber",     image: require("../../assets/role3.png") },
   { id: 2, name: "Electrician", image: require("../../assets/role1.png") },
@@ -134,11 +136,12 @@ const styles = StyleSheet.create({
   rule: { height: 6, backgroundColor: BRAND, marginTop: 8 },
 
   sectionTitle: {
-    fontSize: 36,
-    fontWeight: "800",
+    fontSize: 50,
+    fontWeight: "700",
+    fontFamily: "Geologica",
     color: BRAND,
     textAlign: "center",
-    marginVertical: 20,
+    marginVertical: 60,
   },
 
   grid: {
@@ -192,5 +195,5 @@ const styles = StyleSheet.create({
     paddingHorizontal: 28,
     marginTop: 6,
   },
-  ctaText: { color: "#fff", fontWeight: "900" },
+  ctaText: { color: "#fff", fontWeight: "700", fontFamily: "Geologica",},
 });
