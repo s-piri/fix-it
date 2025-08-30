@@ -23,6 +23,7 @@ export default function HomeScreen() {
   const nav = useNavigation<any>();
   const [location, setLocation] = React.useState("");
   const [details, setDetails] = React.useState("");
+  const [selected, setSelected] = React.useState<number | null>(null);
 
   return (
     <ScrollView contentContainerStyle={styles.page}>
@@ -50,7 +51,8 @@ export default function HomeScreen() {
             <ServiceCard
               label={s.name}
               icon={s.image}
-              onPress={() => nav.navigate("Book", { service: s.name })}
+              selected={selected === s.id}
+              onPress={() => setSelected(s.id)}
             />
           </View>
           ))}
