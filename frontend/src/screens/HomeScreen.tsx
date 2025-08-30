@@ -27,7 +27,7 @@ export default function HomeScreen() {
   const [selected, setSelected] = React.useState<number | null>(null);
 
   return (
-    <ScrollView contentContainerStyle={styles.page}>
+    <ScrollView contentContainerStyle={[styles.page, { alignItems: "center", paddingHorizontal: 16 }]}>
       {/* content column */}
       <View style={styles.container}>
         {/* Nav bar (simple, static) */}
@@ -100,9 +100,9 @@ const styles = StyleSheet.create({
   },
   container: {
     width: "100%",
-    maxWidth: 1120,       
+    // maxWidth: 1120,       
     alignSelf: "center",
-    paddingHorizontal: 16,
+    paddingHorizontal: 16, 
     paddingTop: 16,
   },
   navbar: {
@@ -144,7 +144,8 @@ const styles = StyleSheet.create({
   grid: {
     flexDirection: "row",
     flexWrap: "wrap",
-    justifyContent: "space-between",
+    justifyContent: "center",   
+    columnGap: 24,               
     rowGap: 16,
   } as any,
 
