@@ -30,7 +30,30 @@ else
     echo "No existing database found, creating fresh one..."
 fi
 
-echo "Applying migrations..."
+# Clean up old migration files (except __init__.py)
+echo "Cleaning up old migration files..."
+if [ -f "users/migrations/0*.py" ]; then
+    rm users/migrations/0*.py
+    echo "Removed users migration files"
+fi
+if [ -f "providers/migrations/0*.py" ]; then
+    rm providers/migrations/0*.py
+    echo "Removed providers migration files"
+fi
+
+echo "Creating fresh migrations..."
+python manage.py makemigrations providers
+if [ $? -ne 0 ]; then
+    echo "Error: Failed to create providers migrations"
+    exit 1
+fi
+
+python manage.py makemigrations users
+if [ $? -ne 0 ]; then
+    echo "Error: Failed to create users migrations"
+    exit 1
+fi
+
 python manage.py migrate
 if [ $? -ne 0 ]; then
     echo "Error: Failed to apply migrations"

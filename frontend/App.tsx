@@ -8,6 +8,7 @@ import FindingScreen from "./src/screens/FindingScreen";
 import TrackScreen from "./src/screens/TrackScreen";
 import ReceiptScreen from "./src/screens/ReceiptScreen";
 import LoginPage from "./src/screens/login_page";
+import { RootStackParamList } from "./src/types/navigation";
 import { useFonts } from "expo-font";
 // import Navigation from "./src/Navigation"; // if you use a navigator
 

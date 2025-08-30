@@ -135,6 +135,7 @@ export default function HomeScreen() {
             onPressIn={onCtaIn}
             onPressOut={onCtaOut}
     
+            onPress={() => nav.navigate("Finding", { location, details })}
             style={styles.cta}
           >
             <Text style={styles.ctaText}>Fix It!</Text>
