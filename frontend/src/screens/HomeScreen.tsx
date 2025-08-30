@@ -133,7 +133,7 @@ export default function HomeScreen() {
 
         <View style={styles.grid}>
           {SERVICES.map((s, i) => {
-            const anim = useFadeInUp(i * 70); // stagger by 70ms
+            const anim = useFadeInUp(i * 70);
             return (
               <Animated.View key={s.id} style={[styles.cardWrap, anim]}>
                 <ServiceCard
@@ -185,12 +185,9 @@ export default function HomeScreen() {
           <Pressable
             onPressIn={onCtaIn}
             onPressOut={onCtaOut}
-            onPress={() => nav.navigate("Finding", { location, details, service: SERVICES.find(s => s.id === selected)?.name })}
-            disabled={!location.trim() || !details.trim()}
-            style={[
-              styles.cta,
-              (!location.trim() || !details.trim()) && { opacity: 0.5 }, // visual disabled
-            ]}
+    
+            onPress={() => nav.navigate("Finding", { location, details })}
+            style={styles.cta}
           >
             <Text style={styles.ctaText}>Fix It!</Text>
           </Pressable>

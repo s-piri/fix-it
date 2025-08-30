@@ -27,11 +27,10 @@ export default function TrackScreen() {
     if (eta === 3) setStatus("onsite");
     if (eta === 0) {
       setStatus("completed");
-      nav.navigate("Receipt", { jobId });
+      nav.navigate("Receipt", { jobId, pro });
     }
   }, [eta, nav, jobId]);
 
-  // --- MOCK professional data (swap to your real data whenever) ---
   const pro = {
     name: "Van Songyot",
     trade: "Locksmith",
@@ -69,7 +68,7 @@ export default function TrackScreen() {
   return (
     <View style={styles.screen}>
       <Text style={styles.title}>Your pro is on the way</Text>
-      <Text>ETA: ~{eta} min</Text>
+      <Text>ETA: {eta} min(s)</Text>
 
       <View style={styles.map}>
         <Text>Live map placeholder</Text>
