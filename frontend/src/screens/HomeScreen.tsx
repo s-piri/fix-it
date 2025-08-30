@@ -9,6 +9,8 @@ import {
   StyleSheet,
 } from "react-native"; 
 import { useNavigation } from "@react-navigation/native";
+import ServiceCard from "./card";
+
 
 const SERVICES = [
   { id: 1, name: "Plumber",     image: require("../../assets/role3.png") },
@@ -22,6 +24,7 @@ export default function HomeScreen() {
   const nav = useNavigation<any>();
   const [location, setLocation] = React.useState("");
   const [details, setDetails] = React.useState("");
+  const [selected, setSelected] = React.useState<number | null>(null);
 
   return (
     <ScrollView contentContainerStyle={styles.page}>
@@ -45,14 +48,14 @@ export default function HomeScreen() {
 
         <View style={styles.grid}>
           {SERVICES.map((s) => (
-            <Pressable
-              key={s.id}
-              style={styles.card}
-              onPress={() => nav.navigate("Book", { service: s.name })}
-            >
-              <Image source={s.image} style={styles.cardImage} />
-              <Text style={styles.cardTitle}>{s.name}</Text>
-            </Pressable>
+            <View key={s.id} style={styles.cardWrap}>
+            <ServiceCard
+              label={s.name}
+              icon={s.image}
+              selected={selected === s.id}
+              onPress={() => setSelected(s.id)}
+            />
+          </View>
           ))}
         </View>
 
@@ -93,10 +96,11 @@ const MUTED = "#F3F4F6";
 const styles = StyleSheet.create({
   page: {
     paddingBottom: 48,
+    backgroundColor: "#fff",
   },
   container: {
     width: "100%",
-    maxWidth: 1120,       // similar to your Figma width
+    maxWidth: 1120,       
     alignSelf: "center",
     paddingHorizontal: 16,
     paddingTop: 16,

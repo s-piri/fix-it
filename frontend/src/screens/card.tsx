@@ -5,13 +5,14 @@ type Props = {
   icon: any;     
   label: string;
   onPress?: () => void;
+  selected?: boolean;  
 };
 
-export default function ServiceCard({ icon, label, onPress }: Props) {
+export default function ServiceCard({ icon, label, onPress, selected }: Props) {
   const [hovered, setHovered] = useState(false);
   const [pressed, setPressed] = useState(false);
 
-  const glow = hovered || pressed; 
+  const glow = hovered || pressed;
 
   return (
     <Pressable
@@ -22,9 +23,9 @@ export default function ServiceCard({ icon, label, onPress }: Props) {
       onPressOut={() => setPressed(false)}
       style={[
         styles.card,
-        glow && styles.cardGlow,
-        // slight lift effect on web only
-        glow && Platform.OS === "web" ? { transform: [{ translateY: -2 }] } : null,
+        selected && styles.cardSelected,                               
+        (glow || selected) && styles.cardGlow,                         
+        (glow || selected) && Platform.OS === "web" ? { transform: [{ translateY: -2 }] } : null,
       ]}
     >
       <View style={styles.imageWrap}>
@@ -54,6 +55,10 @@ const styles = StyleSheet.create({
     elevation: 2,
     transitionProperty: Platform.OS === "web" ? "box-shadow, border-color, transform" : undefined,
     transitionDuration: Platform.OS === "web" ? "180ms" : undefined,
+  },
+  cardSelected: {
+    backgroundColor: "#fff",
+    borderColor: "#22c55e",
   },
   cardGlow: {
     borderColor: "#22c55e", 
