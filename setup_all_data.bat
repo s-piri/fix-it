@@ -20,23 +20,40 @@ if not exist "backend\manage.py" (
 echo Activating virtual environment...
 call venv\Scripts\activate.bat
 
-echo Resetting database completely...
+echo Setting up database...
 cd backend
+
+REM Remove database if it exists
 if exist "db.sqlite3" (
     echo Removing existing database...
     del db.sqlite3
+) else (
+    echo No existing database found, creating fresh one...
 )
 
-echo Creating and applying migrations...
-python manage.py makemigrations providers
-python manage.py makemigrations users
+echo Applying migrations...
 python manage.py migrate
+if errorlevel 1 (
+    echo Error: Failed to apply migrations
+    pause
+    exit /b 1
+)
 
 echo Populating database with provider data...
 python manage.py populate_providers
+if errorlevel 1 (
+    echo Error: Failed to populate providers
+    pause
+    exit /b 1
+)
 
 echo Populating database with client data...
 python manage.py populate_customers
+if errorlevel 1 (
+    echo Error: Failed to populate customers
+    pause
+    exit /b 1
+)
 
 echo.
 echo All data setup complete!
