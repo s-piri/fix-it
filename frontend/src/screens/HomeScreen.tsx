@@ -95,10 +95,11 @@ const MUTED = "#F3F4F6";
 const styles = StyleSheet.create({
   page: {
     paddingBottom: 48,
+    backgroundColor: "#fff",
   },
   container: {
     width: "100%",
-    maxWidth: 1120,       // similar to your Figma width
+    maxWidth: 1120,       
     alignSelf: "center",
     paddingHorizontal: 16,
     paddingTop: 16,
