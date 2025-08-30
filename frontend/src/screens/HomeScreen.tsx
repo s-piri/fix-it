@@ -209,7 +209,7 @@ export default function HomeScreen() {
               (selected == null || !location.trim() || !details.trim()) && { opacity: 0.5 },
             ]}
           >
-            <Text style={styles.ctaText}>Fix It!</Text>
+            <Text style={styles.ctaText}>Find a FIXR</Text>
           </Pressable>
         </Animated.View>
       </View>
