@@ -7,12 +7,10 @@ import {
   TextInput,
   Pressable,
   StyleSheet,
+  Alert,
 } from "react-native"; 
-import { useNavigation } from "@react-navigation/native";
+import { useNavigation, useRoute } from "@react-navigation/native";
 import ServiceCard from "./card";
-
-
-
 
 const SERVICES = [
   { id: 1, name: "Plumber",     image: require("../../assets/role3.png") },
@@ -22,11 +20,35 @@ const SERVICES = [
   { id: 5, name: "Locksmith",   image: require("../../assets/role5.png") },
   { id: 6, name: "Cleaner",     image: require("../../assets/role6.png") },
 ];
+
 export default function HomeScreen() {
   const nav = useNavigation<any>();
+  const route = useRoute<any>();
   const [location, setLocation] = React.useState("");
   const [details, setDetails] = React.useState("");
   const [selected, setSelected] = React.useState<number | null>(null);
+
+  const handleLogout = () => {
+    Alert.alert(
+      "Logout",
+      "Are you sure you want to logout?",
+      [
+        { text: "Cancel", style: "cancel" },
+        { 
+          text: "Logout", 
+          onPress: () => {
+            try {
+              localStorage.removeItem('user');
+              // Force app to re-render and show login
+              window.location.reload();
+            } catch (error) {
+              console.log('Error logging out:', error);
+            }
+          }
+        }
+      ]
+    );
+  };
 
   return (
     <ScrollView contentContainerStyle={[styles.page, { alignItems: "center", paddingHorizontal: 16 }]}>
@@ -38,8 +60,8 @@ export default function HomeScreen() {
           <View style={styles.navLinks}>
             <Text style={styles.navLink}>About</Text>
             <Text style={styles.navLink}>Help</Text>
-            <Pressable style={styles.signInBtn} onPress={() => nav.navigate("Login")}>
-              <Text style={styles.signInText}>Sign In</Text>
+            <Pressable style={styles.signInBtn} onPress={handleLogout}>
+              <Text style={styles.signInText}>Logout</Text>
             </Pressable>
           </View>
         </View>
