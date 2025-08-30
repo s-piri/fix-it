@@ -101,13 +101,19 @@ const styles = StyleSheet.create({
     shadowRadius: 8,
     elevation: 4,
   },
+
+  logoImage: {
+    width: 180,  
+    height: 80,   
+    resizeMode: "contain", 
+  },
+
   header: { alignItems: "center", marginBottom: 32 },
   title: { fontSize: 24, fontWeight: "700", color: "#1F2937", marginBottom: 8 },
-  logo: { fontSize: 18, fontWeight: "700", color: "#1F2937", letterSpacing: 2 },
   form: {},
   inputGroup: { marginBottom: 24 },
   label: { fontSize: 14, fontWeight: "600", color: "#374151", marginBottom: 8 },
   input: { borderWidth: 1, borderColor: "#D1D5DB", borderRadius: 6, paddingHorizontal: 12, paddingVertical: 8, fontSize: 16, backgroundColor: "#FFFFFF" },
-  button: { backgroundColor: "#1F2937", paddingVertical: 12, paddingHorizontal: 16, borderRadius: 6, alignItems: "center", marginTop: 8 },
+  button: { backgroundColor: "#00447c", paddingVertical: 12, paddingHorizontal: 16, borderRadius: 6, alignItems: "center", marginTop: 8 },
   buttonText: { color: "#FFFFFF", fontSize: 16, fontWeight: "600" },
 });

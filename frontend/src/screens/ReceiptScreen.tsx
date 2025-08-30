@@ -56,7 +56,7 @@ export default function ReceiptScreen() {
 
       {!sent ? (
         <View style={styles.ratingSection}>
-          <Text style={styles.ratingTitle}>Rate your experience</Text>
+          <Text style={styles.ratingTitle}>Rate your FIXR</Text>
 
           <View style={styles.starsContainer}>
             {[1, 2, 3, 4, 5].map((v) => (
