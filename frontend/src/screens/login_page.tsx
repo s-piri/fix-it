@@ -1,16 +1,26 @@
-import React, { useState } from 'react';
-import { View, Text, TextInput, Pressable, StyleSheet } from 'react-native';
-import { useNavigation } from '@react-navigation/native';
+import React, { useState } from "react";
+import { View, Text, TextInput, Pressable, StyleSheet, ActivityIndicator, Alert } from "react-native";
+import { useNavigation } from "@react-navigation/native";
+import { login } from "../api/auth"; // <-- add
 
 export default function LoginScreen() {
-  const [username, setUsername] = useState('');
-  const [password, setPassword] = useState('');
+  const [username, setUsername] = useState("");
+  const [password, setPassword] = useState("");
+  const [loading, setLoading]   = useState(false);
   const navigation = useNavigation<any>();
 
-  const handleSubmit = () => {
-    console.log('Login attempt:', { username, password });
-    navigation.navigate('Home');
-    alert(`Login Successfully`)
+  const handleSubmit = async () => {
+    if (!username || !password) return Alert.alert("Missing info", "Enter username and password.");
+    try {
+      setLoading(true);
+      const { user } = await login(username, password);
+      Alert.alert("Login successful", `Welcome, ${user.first_name || user.username}!`);
+      navigation.navigate("Home");
+    } catch (e:any) {
+      Alert.alert("Login failed", e.message ?? "Please try again.");
+    } finally {
+      setLoading(false);
+    }
   };
 
   return (
@@ -20,7 +30,7 @@ export default function LoginScreen() {
           <Text style={styles.title}>Log In</Text>
           <Text style={styles.logo}>FIX IT</Text>
         </View>
-        
+
         <View style={styles.form}>
           <View style={styles.inputGroup}>
             <Text style={styles.label}>Username</Text>
@@ -30,9 +40,11 @@ export default function LoginScreen() {
               onChangeText={setUsername}
               placeholder="Enter your Username or E-mail"
               placeholderTextColor="#9CA3AF"
+              autoCapitalize="none"
+              autoCorrect={false}
             />
           </View>
-          
+
           <View style={styles.inputGroup}>
             <Text style={styles.label}>Password</Text>
             <TextInput
@@ -44,9 +56,9 @@ export default function LoginScreen() {
               placeholderTextColor="#9CA3AF"
             />
           </View>
-          
-          <Pressable style={styles.button} onPress={handleSubmit}>
-            <Text style={styles.buttonText}>Submit</Text>
+
+          <Pressable style={styles.button} onPress={handleSubmit} disabled={loading}>
+            {loading ? <ActivityIndicator color="#fff" /> : <Text style={styles.buttonText}>Submit</Text>}
           </Pressable>
         </View>
       </View>
@@ -55,72 +67,26 @@ export default function LoginScreen() {
 }
 
 const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    backgroundColor: '#F3F4F6',
-    justifyContent: 'center',
-    alignItems: 'center',
-    padding: 16,
-  },
+  container: { flex: 1, backgroundColor: "#F3F4F6", justifyContent: "center", alignItems: "center", padding: 16 },
   card: {
-    backgroundColor: '#FFFFFF',
+    backgroundColor: "#FFFFFF",
     borderRadius: 12,
     padding: 32,
-    width: '100%',
+    width: "100%",
     maxWidth: 384,
-    shadowColor: '#000',
+    shadowColor: "#000",
     shadowOffset: { width: 0, height: 2 },
     shadowOpacity: 0.1,
     shadowRadius: 8,
     elevation: 4,
   },
-  header: {
-    alignItems: 'center',
-    marginBottom: 32,
-  },
-  title: {
-    fontSize: 24,
-    fontWeight: '700',
-    color: '#1F2937',
-    marginBottom: 8,
-  },
-  logo: {
-    fontSize: 18,
-    fontWeight: '700',
-    color: '#1F2937',
-    letterSpacing: 2,
-  },
-  form: {
-  },
-  inputGroup: {
-    marginBottom: 24,
-  },
-  label: {
-    fontSize: 14,
-    fontWeight: '600',
-    color: '#374151',
-    marginBottom: 8,
-  },
-  input: {
-    borderWidth: 1,
-    borderColor: '#D1D5DB',
-    borderRadius: 6,
-    paddingHorizontal: 12,
-    paddingVertical: 8,
-    fontSize: 16,
-    backgroundColor: '#FFFFFF',
-  },
-  button: {
-    backgroundColor: '#1F2937',
-    paddingVertical: 12,
-    paddingHorizontal: 16,
-    borderRadius: 6,
-    alignItems: 'center',
-    marginTop: 8,
-  },
-  buttonText: {
-    color: '#FFFFFF',
-    fontSize: 16,
-    fontWeight: '600',
-  },
+  header: { alignItems: "center", marginBottom: 32 },
+  title: { fontSize: 24, fontWeight: "700", color: "#1F2937", marginBottom: 8 },
+  logo: { fontSize: 18, fontWeight: "700", color: "#1F2937", letterSpacing: 2 },
+  form: {},
+  inputGroup: { marginBottom: 24 },
+  label: { fontSize: 14, fontWeight: "600", color: "#374151", marginBottom: 8 },
+  input: { borderWidth: 1, borderColor: "#D1D5DB", borderRadius: 6, paddingHorizontal: 12, paddingVertical: 8, fontSize: 16, backgroundColor: "#FFFFFF" },
+  button: { backgroundColor: "#1F2937", paddingVertical: 12, paddingHorizontal: 16, borderRadius: 6, alignItems: "center", marginTop: 8 },
+  buttonText: { color: "#FFFFFF", fontSize: 16, fontWeight: "600" },
 });
