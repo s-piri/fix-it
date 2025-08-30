@@ -42,7 +42,7 @@ const processProviderData = (provider: Provider) => {
   }
   
   // Safely capitalize job type with fallback
-  const jobType = provider.job_type || "handyman";
+  const jobType = provider.job_type || "cleaner"; // Changed default from handyman to cleaner
   const capitalizedJobType = jobType.charAt(0).toUpperCase() + jobType.slice(1);
   
   return {
