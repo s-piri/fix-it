@@ -19,14 +19,17 @@ fi
 echo "Activating virtual environment..."
 source venv/bin/activate
 
-echo "Creating and applying migrations..."
+echo "Resetting database completely..."
 cd backend
+if [ -f "db.sqlite3" ]; then
+    echo "Removing existing database..."
+    rm db.sqlite3
+fi
+
+echo "Creating and applying migrations..."
 python manage.py makemigrations providers
 python manage.py makemigrations users
 python manage.py migrate
-
-echo "Clearing existing data..."
-python manage.py flush --noinput
 
 echo "Populating database with provider data..."
 python manage.py populate_providers
