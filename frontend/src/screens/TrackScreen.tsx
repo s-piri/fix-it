@@ -187,7 +187,7 @@ export default function TrackScreen() {
 
   return (
     <View style={trackScreenStyles.screen}>
-      <Text style={trackScreenStyles.title}>Your pro is on the way</Text>
+      <Text style={trackScreenStyles.title}>Your FIXR is on the way</Text>
       <Text>ETA: ~{eta} min</Text>
 
       {/* Interactive Map */}
