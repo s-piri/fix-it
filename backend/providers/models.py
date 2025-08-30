@@ -17,6 +17,7 @@ class Provider(models.Model):
     hourly_rate = models.DecimalField(max_digits=8, decimal_places=2)
     is_available = models.BooleanField(default=True)
     rating = models.DecimalField(max_digits=3, decimal_places=2, default=0.00)
+    profile_picture = models.ImageField(upload_to='provider_photos/', null=True, blank=True)
     
     def __str__(self):
         return f"{self.provider_name} - {self.job_type}"
