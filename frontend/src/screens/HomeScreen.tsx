@@ -185,9 +185,29 @@ export default function HomeScreen() {
           <Pressable
             onPressIn={onCtaIn}
             onPressOut={onCtaOut}
-    
-            onPress={() => nav.navigate("Finding", { location, details })}
-            style={styles.cta}
+            onPress={() => {
+              if (selected == null) {
+                alert("Please select a service first");
+                return;
+              }
+
+              if (!location.trim() || !details.trim()) {
+                alert("Please enter location and details");
+                return;
+              }
+
+              const selectedService = SERVICES.find(s => s.id === selected);
+              nav.navigate("Finding", {
+                location,
+                details,
+                service: selectedService?.name, // e.g., "Plumber"
+              });
+            }}
+            disabled={selected == null || !location.trim() || !details.trim()}
+            style={[
+              styles.cta,
+              (selected == null || !location.trim() || !details.trim()) && { opacity: 0.5 },
+            ]}
           >
             <Text style={styles.ctaText}>Fix It!</Text>
           </Pressable>
