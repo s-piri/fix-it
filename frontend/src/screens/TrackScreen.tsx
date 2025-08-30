@@ -22,7 +22,6 @@ interface Location {
   longitude: number;
 }
 
-// Helper function to map backend profile picture paths to local assets
 const getProfilePicture = (profilePicturePath?: string) => {
   if (!profilePicturePath) {
     return require("../../assets/pros/driver1.jpg");
@@ -157,8 +156,8 @@ export default function TrackScreen() {
           return prev;
         }
         
-        // Move towards user at a slow, steady pace
-        const moveSpeed = 0.0001; // Adjust this to control movement speed
+        // Move towards user
+        const moveSpeed = 0.0001;
         const moveRatio = Math.min(moveSpeed / distance, 1);
         
         return {
@@ -171,7 +170,6 @@ export default function TrackScreen() {
     return () => clearInterval(moveInterval);
   }, [userLocation]);
 
-  // Add CSS animations
   React.useEffect(() => {
     const styleId = 'track-screen-animations';
     if (!document.getElementById(styleId)) {
@@ -217,8 +215,8 @@ export default function TrackScreen() {
     photo: getProfilePicture(),
   };
 
-  // --- Popup animation state ---
-  const [showProfile, setShowProfile] = React.useState(true); // show immediately on match
+  //Popup animation
+  const [showProfile, setShowProfile] = React.useState(true);
   const veilOpacity = React.useRef(new Animated.Value(0)).current;
   const sheetOpacity = React.useRef(new Animated.Value(0)).current;
   const sheetScale = React.useRef(new Animated.Value(0.92)).current;
