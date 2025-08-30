@@ -318,8 +318,6 @@ export default function TrackScreen() {
                 <Text style={trackScreenStyles.badge}>★ {pro.rating}</Text>
                 <Text style={trackScreenStyles.sep}>•</Text>
                 <Text style={trackScreenStyles.badge}>{pro.jobs} jobs</Text>
-                <Text style={trackScreenStyles.sep}>•</Text>
-                <Text style={trackScreenStyles.badge}>{pro.distanceKm} km away</Text>
               </View>
 
               <View style={[trackScreenStyles.row, { marginTop: 8 }]}>
