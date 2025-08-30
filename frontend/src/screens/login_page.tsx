@@ -28,7 +28,7 @@ export default function LoginScreen() {
               style={styles.input}
               value={username}
               onChangeText={setUsername}
-              placeholder="Value"
+              placeholder="Enter your Username or E-mail"
               placeholderTextColor="#9CA3AF"
             />
           </View>
@@ -40,6 +40,7 @@ export default function LoginScreen() {
               value={password}
               onChangeText={setPassword}
               secureTextEntry
+              placeholder="Enter your Password"
               placeholderTextColor="#9CA3AF"
             />
           </View>
