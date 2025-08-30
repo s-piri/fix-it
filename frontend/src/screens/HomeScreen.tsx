@@ -54,17 +54,29 @@ export default function HomeScreen() {
   const [details, setDetails] = React.useState("");
   const [selected, setSelected] = React.useState<number | null>(null);
 
+  const formAnim = React.useRef(new Animated.Value(0)).current; // 0 = hidden, 1 = visible
+
+  React.useEffect(() => {
+    if (selected != null) {
+      Animated.timing(formAnim, {
+        toValue: 1,
+        duration: 300,
+        easing: Easing.out(Easing.cubic),
+        useNativeDriver: true,
+      }).start();
+    } else {
+      formAnim.setValue(0); 
+    }
+  }, [selected, formAnim]);
+
   const handleLogout = () => {
-    // Use web-compatible confirmation dialog
     const confirmed = window.confirm("Are you sure you want to logout?");
     
     if (confirmed) {
       try {
-        // Call the logout function passed from App.tsx
         if (route.params?.onLogout) {
           route.params.onLogout();
         } else {
-          // Fallback: direct localStorage removal and reload
           localStorage.removeItem('user');
           window.location.reload();
         }
@@ -117,7 +129,7 @@ export default function HomeScreen() {
         <View style={styles.rule} />
 
         {/* Services */}
-        <Text style={styles.sectionTitle}>Services</Text>
+        <Text style={styles.sectionTitle}>What needs fixin'?</Text>
 
         <View style={styles.grid}>
           {SERVICES.map((s, i) => {
@@ -136,47 +148,76 @@ export default function HomeScreen() {
         </View>
 
         {/* Request a Fixer */}
-        <Text style={[styles.sectionTitle, { marginTop: 36 }]}>
-          Request a Fixer
-        </Text>
+        {selected != null && (
+  <>
+    <Text style={[styles.sectionTitle, { marginTop: 36 }]}>
+      Where to?
+    </Text>
 
-        <View style={styles.form}>
-          <TextInput
-            placeholder="Enter location"
-            value={location}
-            onChangeText={setLocation}
-            style={styles.input}
-          />
-          <TextInput
-            placeholder="Details"
-            value={details}
-            onChangeText={setDetails}
-            style={[styles.input, { height: 56 }]}
-          />
-          <Animated.View style={{ transform: [{ scale: ctaScale }] }}>
+    <Animated.View
+      style={{
+        opacity: formAnim,
+        transform: [
+          {
+            translateY: formAnim.interpolate({
+              inputRange: [0, 1],
+              outputRange: [12, 0], // slide up a bit
+            }),
+          },
+        ],
+      }}
+    >
+      <View style={styles.form}>
+        <TextInput
+          placeholder="Enter location"
+          value={location}
+          onChangeText={setLocation}
+          style={styles.input}
+        />
+        <TextInput
+          placeholder="Details"
+          value={details}
+          onChangeText={setDetails}
+          style={[styles.input, { height: 56 }]}
+        />
+
+        <Animated.View style={{ transform: [{ scale: ctaScale }] }}>
           <Pressable
             onPressIn={onCtaIn}
             onPressOut={onCtaOut}
-    
             onPress={() => {
-              if (!selected) {
+              if (selected == null) {
                 alert("Please select a service first");
                 return;
               }
+
+              if (!location.trim() || !details.trim()) {
+                alert("Please enter location and details");
+                return;
+              }
+
               const selectedService = SERVICES.find(s => s.id === selected);
-              nav.navigate("Finding", { 
-                location, 
-                details, 
-                jobType: selectedService?.name.toLowerCase() || "plumbing" 
+              nav.navigate("Finding", {
+                location,
+                details,
+                service: selectedService?.name, // e.g., "Plumber"
               });
             }}
-            style={styles.cta}
+            disabled={selected == null || !location.trim() || !details.trim()}
+            style={[
+              styles.cta,
+              (selected == null || !location.trim() || !details.trim()) && { opacity: 0.5 },
+            ]}
           >
             <Text style={styles.ctaText}>Fix It!</Text>
           </Pressable>
         </Animated.View>
-        </View>
       </View>
+    </Animated.View>
+  </>
+)}
+        </View>
+      {/* </View> */}
     </ScrollView>
   );
 }
@@ -232,7 +273,7 @@ const styles = StyleSheet.create({
     fontFamily: "Geologica",
     color: BRAND,
     textAlign: "center",
-    marginVertical: 70,
+    marginVertical: 80,
   },
 
   grid: {
@@ -277,10 +318,12 @@ const styles = StyleSheet.create({
     paddingHorizontal: 16,
     paddingVertical: 14,
     fontSize: 16,
+    color: "#616161"
   },
+ 
   logoImage: {
-    width: 100,  
-    height: 20,   
+    width: 120,  
+    height: 40,   
     resizeMode: "contain", 
   },
   cta: {
