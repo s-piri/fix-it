@@ -60,7 +60,7 @@ export default function TrackScreen() {
     // Randomize initial provider location within a reasonable distance
     const baseLat = 37.78925; // User latitude
     const baseLng = -122.4314; // User longitude
-    const randomOffset = (Math.random() - 0.5) * 0.03; // Random offset within ~1km
+    const randomOffset = (Math.random()%10 - 0.5) * 0.01; // Random offset within ~1km
     
     return {
       latitude: baseLat + randomOffset,
@@ -242,22 +242,6 @@ export default function TrackScreen() {
               opacity="0.8" 
             />
           </svg>
-          
-          {/* Distance info panel */}
-          <View style={trackScreenStyles.infoPanel}>
-            <View style={trackScreenStyles.infoRow}>
-              <Text style={trackScreenStyles.infoLabel}>Distance:</Text>
-              <Text style={trackScreenStyles.infoValue}>{(Math.random() * 2 + 0.5).toFixed(1)} km</Text>
-            </View>
-            <View style={trackScreenStyles.infoRow}>
-              <Text style={trackScreenStyles.infoLabel}>Speed:</Text>
-              <Text style={trackScreenStyles.infoValue}>{(Math.random() * 20 + 30).toFixed(0)} km/h</Text>
-            </View>
-            <View style={trackScreenStyles.infoRow}>
-              <Text style={trackScreenStyles.infoLabel}>Route:</Text>
-              <Text style={[trackScreenStyles.infoValue, { color: getStatusColor(status) }]}>{getStatusText(status)}</Text>
-            </View>
-          </View>
           
           {/* Map controls */}
           <View style={trackScreenStyles.mapControls}>
