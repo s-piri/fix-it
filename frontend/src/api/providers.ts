@@ -2,9 +2,15 @@
 const BASE_URL = process.env.EXPO_PUBLIC_API_BASE_URL ?? "http://localhost:8000/api";
 
 export type Provider = {
-  provider_id: number;
+  provider_id: string;
   provider_name: string;
-  eta: number;
+  job_type: string;
+  eta: string;
+  hourly_rate: number;
+  is_available: boolean;
+  rating: number;
+  jobs: number;
+  vehicle: string;
   profile_picture?: string;
 };
 
