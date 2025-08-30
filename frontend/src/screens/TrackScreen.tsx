@@ -36,7 +36,6 @@ export default function TrackScreen() {
     trade: "Locksmith",
     rating: 4.9,
     jobs: 124,
-    distanceKm: 2.1,
     etaMin: Math.max(eta, 1),
     vehicle: "Toyota HiAce",
     // remote placeholder image so there's no bundler path issues
@@ -102,8 +101,6 @@ export default function TrackScreen() {
                 <Text style={styles.badge}>★ {pro.rating.toFixed(1)}</Text>
                 <Text style={styles.sep}>•</Text>
                 <Text style={styles.badge}>{pro.jobs} jobs</Text>
-                <Text style={styles.sep}>•</Text>
-                <Text style={styles.badge}>{pro.distanceKm.toFixed(1)} km away</Text>
               </View>
 
               <View style={[styles.row, { marginTop: 8 }]}>
