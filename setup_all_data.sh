@@ -9,20 +9,47 @@ if [ ! -f "venv/bin/activate" ]; then
     exit 1
 fi
 
+# Check if backend directory exists
+if [ ! -f "backend/manage.py" ]; then
+    echo "Error: Django project not found in backend directory!"
+    echo "Please ensure the backend directory contains the Django project."
+    exit 1
+fi
+
 echo "Activating virtual environment..."
 source venv/bin/activate
 
-echo "Creating and applying migrations..."
+echo "Setting up database..."
 cd backend
-python manage.py makemigrations providers
-python manage.py makemigrations users
+
+# Remove database if it exists
+if [ -f "db.sqlite3" ]; then
+    echo "Removing existing database..."
+    rm db.sqlite3
+else
+    echo "No existing database found, creating fresh one..."
+fi
+
+echo "Applying migrations..."
 python manage.py migrate
+if [ $? -ne 0 ]; then
+    echo "Error: Failed to apply migrations"
+    exit 1
+fi
 
 echo "Populating database with provider data..."
 python manage.py populate_providers
+if [ $? -ne 0 ]; then
+    echo "Error: Failed to populate providers"
+    exit 1
+fi
 
 echo "Populating database with client data..."
 python manage.py populate_customers
+if [ $? -ne 0 ]; then
+    echo "Error: Failed to populate customers"
+    exit 1
+fi
 
 echo ""
 echo "All data setup complete!"

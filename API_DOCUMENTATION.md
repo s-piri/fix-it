@@ -176,7 +176,8 @@ GET /providers/search/?customer_id=CUST001&job_type=plumbing&budget=150
     "provider": {
         "provider_id": "PROV001",
         "provider_name": "John Smith Plumbing",
-        "eta": "30 minutes"
+        "eta": "30 minutes",
+        "profile_picture": "http://127.0.0.1:8000/media/provider_photos/john_smith.jpg"
     }
 }
 ```
@@ -382,6 +383,20 @@ The API comes with 10 pre-populated users:
 
 ### Sample Providers
 The API includes providers for all service types with varying hourly rates and ratings.
+
+### Profile Pictures
+Provider profile pictures are stored in the `profile_picture` field and are served from the `/media/` endpoint. The field is optional and will be `null` if no image is uploaded.
+
+## Sample Photo
+Upload sample photo
+```..\venv\Scripts\python.exe manage.py upload_all_provider_photos "..\temp\1.jpg" "..\temp\2.jpg" "..\temp\3.jpg" "..\temp\4.jpg"``
+
+**Image Requirements:**
+- Supported formats: JPG, PNG, GIF
+- Recommended size: 300x300 pixels
+- Maximum file size: 5MB
+- Upload path: `/media/provider_photos/`
+
 
 ---
 

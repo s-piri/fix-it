@@ -37,10 +37,14 @@ echo.
 echo To activate the virtual environment in the future, run:
 echo venv\Scripts\activate.bat
 echo.
-echo To start a new Django project, run:
-echo django-admin startproject myproject .
+echo To setup the database and populate mock data, run:
+echo setup_all_data.bat
 echo.
-echo To run the development server, run:
+echo To start the development server, run:
+echo run.bat
+echo.
+echo Or manually:
+echo cd backend
 echo python manage.py runserver
 echo.
 pause
