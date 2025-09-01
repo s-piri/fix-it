@@ -216,10 +216,14 @@ export default function TrackScreen() {
   };
 
 <<<<<<< HEAD
+<<<<<<< HEAD
   //Popup animation state
 =======
   //Popup animation
 >>>>>>> 268acdf (removed stuff)
+=======
+  //Popup animation state
+>>>>>>> 7c68b1b57005a6757274fe4772233287284b7b39
   const [showProfile, setShowProfile] = React.useState(true);
   const veilOpacity = React.useRef(new Animated.Value(0)).current;
   const sheetOpacity = React.useRef(new Animated.Value(0)).current;
