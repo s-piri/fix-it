@@ -114,9 +114,3 @@ Fix-it is an on-demand home services platform that connects households with veri
    ```cmd
    npm start
    ```
-
-### Access
-
-### Access
-
-`127.0.0.1:8081`
